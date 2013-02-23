@@ -1,0 +1,14 @@
+{
+    "name": "apexstudios/phabricator",
+    "description": "Apex Studios' fork of Phabricator",
+    "authors": [
+        {
+            "name": "Anh Nhan Nguyen",
+            "email": "anhnhan@outlook.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "aws/aws-sdk-php": "*"
+    }
+}
