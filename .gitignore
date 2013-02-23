@@ -30,3 +30,5 @@
 
 # User-accessible hook for adhoc debugging scripts
 /support/debug.php
+
+/vendor/
