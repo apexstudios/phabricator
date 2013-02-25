@@ -171,6 +171,10 @@ final class PhabricatorBuiltinPatchList extends PhabricatorSQLPatchList {
         'type'    => 'db',
         'name'    => 'token',
       ),
+      'db.packager' => array(
+        'type'    => 'db',
+        'name'    => 'packager',
+      ),
       '0000.legacy.sql' => array(
         'type'    => 'sql',
         'name'    => $this->getPatchPath('0000.legacy.sql'),
@@ -1152,6 +1156,10 @@ final class PhabricatorBuiltinPatchList extends PhabricatorSQLPatchList {
       '20130222.dropchannel.sql' => array(
         'type'    => 'sql',
         'name'    => $this->getPatchPath('20130222.dropchannel.sql'),
+      ),
+      '20130226.packager.sql' => array(
+        'type'    => 'sql',
+        'name'    => $this->getPatchPath('20130226.packager.sql'),
       ),
     );
   }
