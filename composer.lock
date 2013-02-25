@@ -1,44 +1,18 @@
 {
-    "hash": "8b213a3dea4849ca71de6ee3c3b7850c",
+    "hash": "69f4da8876c4c29b28abecf0a9bfdc5e",
     "packages": [
-        {
-            "name": "apexstudios/yamwlib",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/apexstudios/yamwlib",
-                "reference": "17feab292671c898de1ef5a995ccc383428717b4"
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "time": "2013-02-21 23:51:35",
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "YamwLibs": "src/"
-                }
-            },
-            "authors": [
-                {
-                    "name": "Anh Nhan Nguyen",
-                    "email": "anhnhan@outlook.com"
-                }
-            ],
-            "homepage": "http://github.com/apexstudios/yamwlib"
-        },
         {
             "name": "aws/aws-sdk-php",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "45f9d3cb1b80ba31cf20bf19e9c3a7f51278ff79"
+                "reference": "88a14af265e65363b1a11d659ae0bbbd0cb00d75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/45f9d3cb1b80ba31cf20bf19e9c3a7f51278ff79",
-                "reference": "45f9d3cb1b80ba31cf20bf19e9c3a7f51278ff79",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/88a14af265e65363b1a11d659ae0bbbd0cb00d75",
+                "reference": "88a14af265e65363b1a11d659ae0bbbd0cb00d75",
                 "shasum": ""
             },
             "require": {
@@ -57,7 +31,7 @@
                 "ext-apc": "Allows service description opcode caching, request and response caching, and credentials caching",
                 "monolog/monolog": "Adds support for logging HTTP requests and responses"
             },
-            "time": "2013-02-22 01:57:02",
+            "time": "2013-02-24 06:21:08",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -96,12 +70,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "475d972afa58566d7332906902ae36435cd0b15f"
+                "reference": "9ed3dcc413a8f9ddeca9546b9ce11cf5f8e6c7e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/475d972afa58566d7332906902ae36435cd0b15f",
-                "reference": "475d972afa58566d7332906902ae36435cd0b15f",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/9ed3dcc413a8f9ddeca9546b9ce11cf5f8e6c7e9",
+                "reference": "9ed3dcc413a8f9ddeca9546b9ce11cf5f8e6c7e9",
                 "shasum": ""
             },
             "require": {
@@ -142,7 +116,7 @@
                 "zendframework/zend-cache": "2.0.*",
                 "zendframework/zend-log": "2.0.*"
             },
-            "time": "2013-02-22 05:05:03",
+            "time": "2013-02-24 03:42:51",
             "type": "library",
             "extra": {
                 "branch-alias": {
