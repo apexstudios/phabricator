@@ -33,6 +33,8 @@ final class PhabricatorPHIDConstants {
   const PHID_TYPE_CONF    = 'CONF';
   const PHID_TYPE_CONP    = 'CONP';
 
+  const PHID_TYPE_PCKG    = 'PCKG';
+
   const PHID_TYPE_XACT    = 'XACT';
   const PHID_TYPE_XCMT    = 'XCMT';
 
