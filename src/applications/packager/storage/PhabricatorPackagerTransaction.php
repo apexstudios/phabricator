@@ -4,7 +4,7 @@ final class PhabricatorPackagerTransaction
   extends PhabricatorApplicationTransaction {
 
   public function getApplicationName() {
-    return 'file';
+    return 'packager';
   }
 
   public function getTableName() {
