@@ -116,7 +116,7 @@ final class PhabricatorPackagerViewController
 
     $view->addSectionHeader(pht("Statistics"));
     $view->addProperty(pht("Downloads"), $packageObject->getDownloads());
-    $view->addProperty(pht("Url"), phutil_tag("em", array(), $packageObject->getPackageUrl()));
+    $view->addProperty(pht("Location"), phutil_tag("em", array(), $packageObject->getPackageUrl()));
 
     $view->addSectionHeader(pht("Description"));
     $view->addTextContent(pht("Let's hope the download links on the right " .
