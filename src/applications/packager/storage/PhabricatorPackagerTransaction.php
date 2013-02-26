@@ -7,10 +7,6 @@ final class PhabricatorPackagerTransaction
     return 'packager';
   }
 
-  public function getTableName() {
-    return 'packager_transaction';
-  }
-
   public function getApplicationTransactionType() {
     return PhabricatorPHIDConstants::PHID_TYPE_PCKG;
   }
