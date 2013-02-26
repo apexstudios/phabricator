@@ -7,6 +7,6 @@ CREATE TABLE {$NAMESPACE}_packager.packager_filepackage (
   dateCreated INT UNSIGNED NOT NULL,
   dateModified INT UNSIGNED NOT NULL,
   KEY `key_author` (authorPHID),
-  UNIQUE KEY `key_package` (packagePHID),
+  UNIQUE KEY `key_package` (phid),
   UNIQUE KEY `key_package_url` (packageUrl)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
