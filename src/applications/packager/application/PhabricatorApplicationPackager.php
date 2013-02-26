@@ -7,7 +7,7 @@ final class PhabricatorApplicationPackager extends PhabricatorApplication {
   }
 
   public function getShortDescription() {
-    return pht('Managing build package packaging management');
+    return pht('Managing AWS S3 downloads');
   }
 
   public function getIconName() {
