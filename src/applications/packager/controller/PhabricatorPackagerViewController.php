@@ -20,6 +20,11 @@ final class PhabricatorPackagerViewController
 
     $title = pht('Package "%s"', basename($packageObject->getPackageUrl()));
 
+    $downloaders = PhabricatorPackagerDownloadersQuery::loadDownloadersForPHID(
+      $packageObject->getPHID());
+
+    $this->loadHandles($downloaders);
+
     $crumbs = $this->buildApplicationCrumbs();
     $crumbs->addCrumb(
       id(new PhabricatorCrumbView())
@@ -27,7 +32,7 @@ final class PhabricatorPackagerViewController
         ->setName($title));
 
     $actions = $this->buildActionView($packageObject);
-    $properties = $this->buildPropertyView($packageObject);
+    $properties = $this->buildPropertyView($packageObject, $downloaders);
 
     $xactions = id(new PhabricatorPackagerTransactionQuery())
       ->setViewer($request->getUser())
@@ -106,13 +111,27 @@ final class PhabricatorPackagerViewController
     return $view;
   }
 
-  private function buildPropertyView(PhabricatorFilePackage $packageObject) {
+  private function buildPropertyView(
+    PhabricatorFilePackage $packageObject,
+    array $downloaders) {
 
     $view = new PhabricatorPropertyListView();
 
     $view->addSectionHeader(pht("Statistics"));
     $view->addProperty(pht("Downloads"), $packageObject->getDownloads());
     $view->addProperty(pht("Location"), phutil_tag("em", array(), $packageObject->getPackageUrl()));
+
+
+    if ($downloaders) {
+      $downloaderLinks = array();
+      foreach ($downloaders as $downloader) {
+        $downloaderLinks[] = $this->getHandle($downloader)->renderLink();
+      }
+      $downloaderView = phutil_implode_html(', ', $downloaderLinks);
+    } else {
+      $downloaderView = phutil_tag('em', array(), pht('None'));
+    }
+    $view->addProperty(pht("Downloaders"), $downloaderView);
 
     $view->addSectionHeader(pht("Description"));
     $view->addTextContent(pht("Let's hope the download links on the right " .
