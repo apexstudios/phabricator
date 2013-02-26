@@ -7,7 +7,7 @@ final class PhabricatorFilePackage extends PhabricatorLiskDAO
     PhabricatorTokenReceiverInterface {
 
   protected $authorPHID;
-  protected $packagePHID;
+  protected $phid;
   protected $packageUrl;
 
   protected $dateCreated;
