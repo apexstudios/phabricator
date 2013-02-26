@@ -38,8 +38,13 @@ final class PhabricatorPackagerListController
     $list->setStackable();
 
     foreach ($packageEntries as $package) {
+      $url = $package->getPackageUrl();
+      $fileName = basename($url);
+
       $item = id(new PhabricatorObjectItemView())
-        ->setHeader($package->getPackageUrl());
+        ->setHeader($fileName)
+        ->setHref($this->getApplicationURI("view/" . $package->getID()))
+        ->addAttribute($url);
 
       $list->addItem($item);
     }
