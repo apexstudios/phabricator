@@ -138,7 +138,8 @@ final class DiffusionHomeController extends DiffusionController {
         $commit
           ? DiffusionView::linkCommit(
               $repository,
-              $commit->getCommitIdentifier())
+              $commit->getCommitIdentifier(),
+              $commit->getSummary())
           : '-',
         $date,
         $time,
