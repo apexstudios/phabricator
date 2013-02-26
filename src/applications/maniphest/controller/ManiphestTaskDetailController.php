@@ -395,7 +395,7 @@ final class ManiphestTaskDetailController extends ManiphestController {
     $view->addAction(
       id(new PhabricatorActionView())
         ->setName(pht('Create Subtask'))
-        ->setHref($this->getApplicationURI("/task/create/?parent={$id}"))
+        ->setHref($this->getApplicationURI("/task/create/?parent={$id}&template={$id}"))
         ->setIcon('fork'));
 
     $view->addAction(
