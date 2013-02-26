@@ -1,6 +1,6 @@
 {
   "project_id" : "phabricator",
-  "conduit_uri" : "https://secure.phabricator.com/api/",
+  "conduit_uri" : "http://phabricator.burningreality.de/api/",
   "lint.engine" : "PhabricatorLintEngine",
   "unit.engine" : "PhutilUnitTestEngine",
   "phutil_libraries" : {
