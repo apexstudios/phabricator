@@ -38,7 +38,7 @@ CREATE TABLE {$NAMESPACE}_packager.packager_transaction_comment (
 
 ) ENGINE=InnoDB, COLLATE utf8_general_ci;
 
-CREATE TABLE `edge` (
+CREATE TABLE {$NAMESPACE}_packager.`edge` (
   `src` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `type` int(10) unsigned NOT NULL,
   `dst` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE `edge` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE `edgedata` (
+CREATE TABLE {$NAMESPACE}_packager.`edgedata` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `data` longtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
