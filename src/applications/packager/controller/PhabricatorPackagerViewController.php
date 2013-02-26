@@ -18,6 +18,8 @@ final class PhabricatorPackagerViewController
       return new Aphront404Response();
     }
 
+    $this->loadHandles(array($packageObject->getAuthorPHID()));
+
     $title = pht('Package %s', basename($packageObject->getPackageUrl()));
 
     $crumbs = $this->buildApplicationCrumbs();
@@ -68,6 +70,8 @@ final class PhabricatorPackagerViewController
     $view = new PhabricatorPropertyListView();
 
     $view->addSectionHeader(pht("Info"));
+    $view->addProperty(pht("Author"), $this->getHandle(
+      $packageObject->getAuthorPHID())->renderLink());
     $view->addProperty(pht("Location"), phutil_tag("em", array(), $packageObject->getPackageUrl()));
     $view->addTextContent(pht("Let's hope the download links on the right " .
       "actually work this time. Else it would be embarrasing."));
