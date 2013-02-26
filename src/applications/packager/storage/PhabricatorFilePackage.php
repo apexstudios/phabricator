@@ -2,7 +2,6 @@
 
 final class PhabricatorFilePackage extends PhabricatorLiskDAO
   implements
-    PhabricatorSubscribableInterface,
     PhabricatorApplicationTransactionInterface,
     PhabricatorTokenReceiverInterface {
 
@@ -26,10 +25,6 @@ final class PhabricatorFilePackage extends PhabricatorLiskDAO
   public function generatePHID() {
     return PhabricatorPHID::generateNewPHID(
       PhabricatorPHIDConstants::PHID_TYPE_PCKG);
-  }
-
-  public function isAutomaticallySubscribed($phid) {
-    return false;
   }
 
   public function getApplicationTransactionEditor() {

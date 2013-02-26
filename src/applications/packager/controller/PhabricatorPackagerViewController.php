@@ -20,11 +20,6 @@ final class PhabricatorPackagerViewController
 
     $title = pht('Package "%s"', basename($packageObject->getPackageUrl()));
 
-    $subscribers = PhabricatorSubscribersQuery::loadSubscribersForPHID(
-      $packageObject->getPHID());
-
-    $this->loadHandles($subscribers);
-
     $crumbs = $this->buildApplicationCrumbs();
     $crumbs->addCrumb(
       id(new PhabricatorCrumbView())
@@ -32,8 +27,7 @@ final class PhabricatorPackagerViewController
         ->setName($title));
 
     $actions = $this->buildActionView($packageObject);
-    // The $title here was once $file
-    $properties = $this->buildPropertyView($packageObject, $subscribers);
+    $properties = $this->buildPropertyView($packageObject);
 
     $xactions = id(new PhabricatorPackagerTransactionQuery())
       ->setViewer($request->getUser())
@@ -107,25 +101,9 @@ final class PhabricatorPackagerViewController
     return $view;
   }
 
-  private function buildPropertyView(
-  PhabricatorFilePackage $packageObject,
-    array $subscribers) {
+  private function buildPropertyView(PhabricatorFilePackage $packageObject) {
 
     $view = new PhabricatorPropertyListView();
-
-    if ($subscribers) {
-      $sub_view = array();
-      foreach ($subscribers as $subscriber) {
-        $sub_view[] = $this->getHandle($subscriber)->renderLink();
-      }
-      $sub_view = phutil_implode_html(', ', $sub_view);
-    } else {
-      $sub_view = phutil_tag('em', array(), pht('None'));
-    }
-
-    $view->addProperty(
-      pht('Subscribers'),
-      $sub_view);
 
     return $view;
   }
