@@ -119,7 +119,6 @@ final class PhabricatorPackagerViewController
 
     $view->addSectionHeader(pht("Statistics"));
     $view->addProperty(pht("Downloads"), $packageObject->getDownloads());
-    $view->addProperty(pht("Location"), phutil_tag("em", array(), $packageObject->getPackageUrl()));
 
 
     if ($downloaders) {
@@ -133,7 +132,8 @@ final class PhabricatorPackagerViewController
     }
     $view->addProperty(pht("Downloaders"), $downloaderView);
 
-    $view->addSectionHeader(pht("Description"));
+    $view->addSectionHeader(pht("Info"));
+    $view->addProperty(pht("Location"), phutil_tag("em", array(), $packageObject->getPackageUrl()));
     $view->addTextContent(pht("Let's hope the download links on the right " .
       "actually work this time. Else it would be embarrasing."));
 
