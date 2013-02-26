@@ -9,6 +9,8 @@ final class PhabricatorFilePackage extends PhabricatorLiskDAO
   protected $phid;
   protected $packageUrl;
 
+  protected $downloads;
+
   protected $dateCreated;
   protected $dateModified;
 

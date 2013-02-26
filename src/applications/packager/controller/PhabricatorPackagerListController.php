@@ -8,9 +8,6 @@ final class PhabricatorPackagerListController
     $request = $this->getRequest();
 
     $packageTable = new PhabricatorFilePackage();
-
-    $pager = new AphrontPagerView();
-    $pager->setOffset($request->getInt('page'));
     $conn = $packageTable->establishConnection('r');
 
     $pager = new AphrontPagerView();
@@ -23,19 +20,20 @@ final class PhabricatorPackagerListController
 
     // Get an exact count since the size here is reasonably going to be a few
     // thousand at most in any reasonable case.
-    $count = queryfx_one(
+    $countQuery = queryfx_one(
       $conn,
       'SELECT COUNT(*) N FROM %T',
       $packageTable->getTableName());
-    $count = $count['N'];
+    $count = $countQuery['N'];
 
     $pager->setCount($count);
     $pager->setURI($request->getRequestURI(), 'page');
 
-    $nodata = pht('There are no image macros yet.');
+    $nodata = pht('There are no registered packages yet.');
 
     $list = new PhabricatorObjectItemListView();
-    $list->setStackable();
+    // $list->setStackable();
+    $list->setNoDataString($nodata);
 
     foreach ($packageEntries as $package) {
       $url = $package->getPackageUrl();
@@ -44,13 +42,14 @@ final class PhabricatorPackagerListController
       $item = id(new PhabricatorObjectItemView())
         ->setHeader($fileName)
         ->setHref($this->getApplicationURI("view/" . $package->getID()))
+        ->addAttribute(pht("Downloads: %d", $package->getDownloads()))
         ->addAttribute($url);
 
       $list->addItem($item);
     }
 
     $header = id(new PhabricatorHeaderView())
-      ->setHeader("Registered Packages");
+      ->setHeader(pht("Registered Packages"));
 
     $nav = $this->buildSideNavView($for_app = false);
 

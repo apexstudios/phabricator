@@ -1,5 +1,9 @@
 <?php
 
+use Aws\Common\Aws;
+use Aws\S3\Exception\S3Exception;
+use Aws\S3\Enum\CannedAcl;
+
 final class PhabricatorPackagerViewController
   extends PhabricatorPackagerController {
 
@@ -78,7 +82,7 @@ final class PhabricatorPackagerViewController
         $crumbs,
         $header,
         $actions,
-        $properties,
+        $properties->render(),
         $timeline,
         $add_comment_header,
         $add_comment_form,
@@ -104,6 +108,13 @@ final class PhabricatorPackagerViewController
   private function buildPropertyView(PhabricatorFilePackage $packageObject) {
 
     $view = new PhabricatorPropertyListView();
+
+    $view->addSectionHeader(pht("Statistics"));
+    $view->addProperty(pht("Downloads"), $packageObject->getDownloads());
+
+    $view->addSectionHeader(pht("Description"));
+    $view->addTextContent(pht("Let's hope the download links on the right " .
+      "actually work this time. Else it would be embarrasing."));
 
     return $view;
   }
