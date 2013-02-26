@@ -15,7 +15,7 @@ final class PhabricatorApplicationPackager extends PhabricatorApplication {
   }
 
   public function getTitleGlyph() {
-    return "\xE1\x9A\x98";
+    return "\xE1\x8C\x98";
   }
 
   public function getApplicationGroup() {
@@ -30,6 +30,7 @@ final class PhabricatorApplicationPackager extends PhabricatorApplication {
         'view/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerViewController',
         'download/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerDownloadController',
         'edit/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerEditController',
+        'comment/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerCommentController',
       ),
     );
   }
