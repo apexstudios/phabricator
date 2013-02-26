@@ -37,3 +37,21 @@ CREATE TABLE {$NAMESPACE}_packager.packager_transaction_comment (
   UNIQUE KEY `key_version` (transactionPHID, commentVersion)
 
 ) ENGINE=InnoDB, COLLATE utf8_general_ci;
+
+CREATE TABLE `edge` (
+  `src` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `type` int(10) unsigned NOT NULL,
+  `dst` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `dateCreated` int(10) unsigned NOT NULL,
+  `seq` int(10) unsigned NOT NULL,
+  `dataID` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`src`,`type`,`dst`),
+  KEY `src` (`src`,`type`,`dateCreated`,`seq`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `edgedata` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `data` longtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
