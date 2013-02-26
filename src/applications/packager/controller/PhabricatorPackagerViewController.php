@@ -1,9 +1,5 @@
 <?php
 
-use Aws\Common\Aws;
-use Aws\S3\Exception\S3Exception;
-use Aws\S3\Enum\CannedAcl;
-
 final class PhabricatorPackagerViewController
   extends PhabricatorPackagerController {
 
