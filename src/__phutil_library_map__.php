@@ -2438,7 +2438,8 @@ phutil_register_library_map(array(
     array(
       0 => 'PhabricatorLiskDAO',
       1 => 'PhabricatorApplicationTransactionInterface',
-      2 => 'PhabricatorTokenReceiverInterface',
+      2 => 'PhabricatorSubscribableInterface',
+      3 => 'PhabricatorTokenReceiverInterface',
     ),
     'PhabricatorFileQuery' => 'PhabricatorCursorPagedPolicyAwareQuery',
     'PhabricatorFileShortcutController' => 'PhabricatorFileController',

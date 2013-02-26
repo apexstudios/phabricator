@@ -3,6 +3,7 @@
 final class PhabricatorFilePackage extends PhabricatorLiskDAO
   implements
     PhabricatorApplicationTransactionInterface,
+    PhabricatorSubscribableInterface,
     PhabricatorTokenReceiverInterface {
 
   protected $authorPHID;
@@ -35,6 +36,10 @@ final class PhabricatorFilePackage extends PhabricatorLiskDAO
 
   public function getApplicationTransactionObject() {
     return new PhabricatorPackagerTransaction();
+  }
+
+  public function isAutomaticallySubscribed($phid) {
+    return false;
   }
 
   public function getUsersToNotifyOfTokenGiven() {
