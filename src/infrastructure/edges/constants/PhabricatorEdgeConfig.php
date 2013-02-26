@@ -44,6 +44,9 @@ final class PhabricatorEdgeConfig extends PhabricatorEdgeConstants {
 
   const TYPE_TEST_NO_CYCLE              = 9000;
 
+  const TYPE_OBJECT_HAS_DOWNLOADER      = 10001;
+  const TYPE_DOWNLOADED_AN_OBJECT       = 10002;
+
   public static function getInverse($edge_type) {
     static $map = array(
       self::TYPE_TASK_HAS_COMMIT => self::TYPE_COMMIT_HAS_TASK,
@@ -84,6 +87,9 @@ final class PhabricatorEdgeConfig extends PhabricatorEdgeConstants {
 
       self::TYPE_OBJECT_HAS_FILE => self::TYPE_FILE_HAS_OBJECT,
       self::TYPE_FILE_HAS_OBJECT => self::TYPE_OBJECT_HAS_FILE,
+
+      self::TYPE_OBJECT_HAS_DOWNLOADER => self::TYPE_DOWNLOADED_AN_OBJECT,
+      self::TYPE_DOWNLOADED_AN_OBJECT => self::TYPE_OBJECT_HAS_DOWNLOADER,
     );
 
     return idx($map, $edge_type);
@@ -116,6 +122,8 @@ final class PhabricatorEdgeConfig extends PhabricatorEdgeConstants {
       PhabricatorPHIDConstants::PHID_TYPE_MOCK  => 'PholioMock',
       PhabricatorPHIDConstants::PHID_TYPE_MCRO  => 'PhabricatorFileImageMacro',
       PhabricatorPHIDConstants::PHID_TYPE_CONP  => 'ConpherenceThread',
+
+      PhabricatorPHIDConstants::PHID_TYPE_PCKG  => 'PhabricatorFilePackage',
 
     );
 
