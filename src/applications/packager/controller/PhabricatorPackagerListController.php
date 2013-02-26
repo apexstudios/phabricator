@@ -7,13 +7,13 @@ final class PhabricatorPackagerListController
 
     $request = $this->getRequest();
 
-    $packageTable = new PhabricatorFilePackage();
-    $conn = $packageTable->establishConnection('r');
+    $package_table = new PhabricatorFilePackage();
+    $conn = $package_table->establishConnection('r');
 
     $pager = new AphrontPagerView();
     $pager->setOffset($request->getInt('page'));
 
-    $packageEntries = $packageTable->loadAllWhere(
+    $package_entries = $package_table->loadAllWhere(
       '1 = 1 ORDER BY id DESC LIMIT %d, %d',
       $pager->getOffset(),
       $pager->getPageSize());
@@ -23,7 +23,7 @@ final class PhabricatorPackagerListController
     $countQuery = queryfx_one(
       $conn,
       'SELECT COUNT(*) N FROM %T',
-      $packageTable->getTableName());
+      $package_table->getTableName());
     $count = $countQuery['N'];
 
     $pager->setCount($count);
@@ -35,14 +35,16 @@ final class PhabricatorPackagerListController
     // $list->setStackable();
     $list->setNoDataString($nodata);
 
-    foreach ($packageEntries as $package) {
+    foreach ($package_entries as $package) {
+    $this->loadHandles(array($package->getAuthorPHID()));
       $url = $package->getPackageUrl();
       $fileName = basename($url);
 
       $item = id(new PhabricatorObjectItemView())
         ->setHeader($fileName)
         ->setHref($this->getApplicationURI("view/" . $package->getID()))
-        ->addAttribute(pht("Downloads: %d", $package->getDownloads()))
+        ->addAttribute($this->getHandle($package->getAuthorPHID())
+          ->renderLink())
         ->addAttribute($url)
         ->addIcon(
           'view',
