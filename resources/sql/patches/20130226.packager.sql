@@ -1,6 +1,6 @@
 CREATE TABLE {$NAMESPACE}_packager.packager_filepackage (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  packagePHID VARCHAR(64) NOT NULL COLLATE utf8_bin,
+  phid VARCHAR(64) NOT NULL COLLATE utf8_bin,
   authorPHID VARCHAR(64) NOT NULL COLLATE utf8_bin,
   packageUrl VARCHAR(255) NOT NULL COLLATE utf8_general_ci,
   dateCreated INT UNSIGNED NOT NULL,
