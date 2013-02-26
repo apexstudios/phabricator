@@ -1,8 +1,14 @@
 <?php
 
 
-final class PhabricatorPackagerCreateController
+final class PhabricatorPackagerEditController
   extends PhabricatorPackagerController {
+
+  private $id;
+
+  public function willProcessRequest(array $data) {
+    $this->id = $data['id'];
+  }
 
   public function processRequest() {
 
@@ -10,11 +16,14 @@ final class PhabricatorPackagerCreateController
     $user = $request->getUser();
 
     $packageObject = new PhabricatorFilePackage();
+    $packageObject->load($this->id);
 
-    $packageObject->setAuthorPHID($user->getPHID());
+    if (!$packageObject) {
+      return new Aphront404Response();
+    }
 
-    $e_url = null;
     $errors = array();
+    $e_url = null;
 
     if ($request->isFormPost()) {
       $url = $request->getStr('url');
@@ -24,8 +33,7 @@ final class PhabricatorPackagerCreateController
         $errors[] = pht("Package URL must not be empty!");
       } else {
         $packageObject->setPackageUrl($url);
-        $packageObject->setDownloads(0);
-        $packageObject->save();
+        $packageObject->update();
 
         return id(new AphrontRedirectResponse())
           ->setURI($this->getApplicationURI('view/' . $packageObject->getID()));
@@ -56,24 +64,25 @@ final class PhabricatorPackagerCreateController
         ->setLabel(pht("Package Url"))
         ->setName('url')
         ->setError($e_url)
-        ->setValue("")
+        ->setValue($packageObject->getPackageUrl())
         ->setCaption("The clean url to the file on S3"))
       ->appendChild(
         id(new AphrontFormSubmitControl())
-          ->setValue(pht('Register this package'))
-          ->addCancelButton($this->getApplicationURI()));
+          ->setValue(pht('Modify this package'))
+          ->addCancelButton(
+            $this->getApplicationURI("view/" . $packageObject->getID())));
 
     $panel = new AphrontPanelView();
     $panel->setWidth(AphrontPanelView::WIDTH_FORM);
-    $panel->setHeader(pht('Register Package'));
+    $panel->setHeader(pht('Edit Package'));
     $panel->setNoBackground();
     $panel->appendChild($form);
 
     $crumbs = $this->buildApplicationCrumbs($this->buildSideNavView());
     $crumbs->addCrumb(
       id(new PhabricatorCrumbView())
-        ->setName(pht('Register Package'))
-        ->setHref($this->getApplicationURI().'register/'));
+        ->setName(pht('Edit Package'))
+        ->setHref($this->getApplicationURI('edit/' . $packageObject->getID())));
 
     return $this->buildApplicationPage(
       array(
@@ -82,7 +91,7 @@ final class PhabricatorPackagerCreateController
         $panel,
       ),
       array(
-        'title' => pht('Register Package'),
+        'title' => pht('Edit Package'),
         'device' => true,
       ));
   }
