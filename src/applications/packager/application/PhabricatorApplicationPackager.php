@@ -28,6 +28,8 @@ final class PhabricatorApplicationPackager extends PhabricatorApplication {
         '' => 'PhabricatorPackagerListController',
         'register/' => 'PhabricatorPackagerCreateController',
         'view/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerViewController',
+        'download/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerDownloadControler',
+        'edit/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerEditControler',
       ),
     );
   }

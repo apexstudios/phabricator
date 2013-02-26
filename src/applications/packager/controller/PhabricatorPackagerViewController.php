@@ -98,6 +98,11 @@ final class PhabricatorPackagerViewController
     $view->setObject($macro);
     $view->addAction(
       id(new PhabricatorActionView())
+        ->setName(pht('Download'))
+        ->setHref($this->getApplicationURI('/download/'.$macro->getID().'/'))
+        ->setIcon('view'));
+    $view->addAction(
+      id(new PhabricatorActionView())
         ->setName(pht('Edit Package'))
         ->setHref($this->getApplicationURI('/edit/'.$macro->getID().'/'))
         ->setIcon('edit'));

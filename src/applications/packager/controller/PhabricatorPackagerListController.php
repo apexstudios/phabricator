@@ -43,7 +43,11 @@ final class PhabricatorPackagerListController
         ->setHeader($fileName)
         ->setHref($this->getApplicationURI("view/" . $package->getID()))
         ->addAttribute(pht("Downloads: %d", $package->getDownloads()))
-        ->addAttribute($url);
+        ->addAttribute($url)
+        ->addIcon(
+          'view',
+          pht('Download'),
+          "download/" . $package->getID());
 
       $list->addItem($item);
     }
