@@ -77,7 +77,15 @@ final class PhabricatorRepositoryCommitHeraldWorker
         $commit->getPHID(),
       ));
 
-    $handles = id(new PhabricatorObjectHandleData($phids))->loadHandles();
+    // TODO: This is complicated and needs to be sorted out properly for
+    // repository policy stuff. We might need an omniscient user here? This
+    // fakes a logged-in user.
+    $viewer = id(new PhabricatorUser())
+      ->setPHID('PHID-USER-XXX');
+
+    $handles = id(new PhabricatorObjectHandleData($phids))
+      ->setViewer($viewer)
+      ->loadHandles();
 
     $commit_handle = $handles[$commit->getPHID()];
     $commit_name = $commit_handle->getName();
