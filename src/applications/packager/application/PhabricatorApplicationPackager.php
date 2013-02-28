@@ -19,7 +19,7 @@ final class PhabricatorApplicationPackager extends PhabricatorApplication {
   }
 
   public function getApplicationGroup() {
-    return self::GROUP_UTILITIES;
+    return self::GROUP_CORE;
   }
 
   public function getRoutes() {
