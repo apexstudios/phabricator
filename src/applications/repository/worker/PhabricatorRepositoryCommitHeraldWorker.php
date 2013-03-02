@@ -77,14 +77,8 @@ final class PhabricatorRepositoryCommitHeraldWorker
         $commit->getPHID(),
       ));
 
-    // TODO: This is complicated and needs to be sorted out properly for
-    // repository policy stuff. We might need an omniscient user here? This
-    // fakes a logged-in user.
-    $viewer = id(new PhabricatorUser())
-      ->setPHID('PHID-USER-XXX');
-
     $handles = id(new PhabricatorObjectHandleData($phids))
-      ->setViewer($viewer)
+      ->setViewer(PhabricatorUser::getOmnipotentUser())
       ->loadHandles();
 
     $commit_handle = $handles[$commit->getPHID()];
@@ -158,9 +152,14 @@ final class PhabricatorRepositoryCommitHeraldWorker
       $template->setFrom($author_phid);
     }
 
+    // TODO: We should verify that each recipient can actually see the
+    // commit before sending them email (T603).
+
     $mails = $reply_handler->multiplexMail(
       $template,
-      id(new PhabricatorObjectHandleData($email_phids))->loadHandles(),
+      id(new PhabricatorObjectHandleData($email_phids))
+        ->setViewer(PhabricatorUser::getOmnipotentUser())
+        ->loadHandles(),
       array());
 
     foreach ($mails as $mail) {

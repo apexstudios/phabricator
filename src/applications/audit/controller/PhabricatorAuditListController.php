@@ -38,6 +38,7 @@ final class PhabricatorAuditListController extends PhabricatorAuditController {
     }
 
     $this->filterStatus = $request->getStr('status', 'all');
+
     $handle = $this->loadHandle();
 
     $nav->appendChild($this->buildListFilters($handle));
@@ -187,6 +188,7 @@ final class PhabricatorAuditListController extends PhabricatorAuditController {
             array(
               'all'   => pht('All'),
               'open'  => pht('Open'),
+              'concern' => pht('Concern Raised'),
             )));
     }
 
@@ -269,8 +271,8 @@ final class PhabricatorAuditListController extends PhabricatorAuditController {
     $views = array();
     switch ($this->filter) {
       case 'active':
-        $views[] = $this->buildAuditView($handle);
         $views[] = $this->buildCommitView($handle);
+        $views[] = $this->buildAuditView($handle);
         break;
       case 'audits':
       case 'user':
@@ -346,19 +348,18 @@ final class PhabricatorAuditListController extends PhabricatorAuditController {
     }
 
     switch ($this->filter) {
-      case 'audits':
-      case 'user':
-      case 'project':
-      case 'package':
-      case 'repository':
+      case 'active':
+        $query->withStatus(PhabricatorAuditQuery::STATUS_OPEN);
+        break;
+      default:
         switch ($this->filterStatus) {
           case 'open':
             $query->withStatus(PhabricatorAuditQuery::STATUS_OPEN);
             break;
+          case 'concern':
+            $query->withStatus(PhabricatorAuditQuery::STATUS_CONCERN);
+            break;
         }
-        break;
-      case 'active':
-        $query->withStatus(PhabricatorAuditQuery::STATUS_OPEN);
         break;
     }
 
@@ -454,13 +455,15 @@ final class PhabricatorAuditListController extends PhabricatorAuditController {
 
     switch ($this->filter) {
       case 'active':
-        $query->withStatus(PhabricatorAuditQuery::STATUS_OPEN);
+        $query->withStatus(PhabricatorAuditCommitQuery::STATUS_CONCERN);
         break;
-      case 'author':
-      case 'packagecommits':
+      default:
         switch ($this->filterStatus) {
           case 'open':
-            $query->withStatus(PhabricatorAuditQuery::STATUS_OPEN);
+            $query->withStatus(PhabricatorAuditCommitQuery::STATUS_OPEN);
+            break;
+          case 'concern':
+            $query->withStatus(PhabricatorAuditCommitQuery::STATUS_CONCERN);
             break;
         }
         break;
