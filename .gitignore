@@ -29,3 +29,6 @@
 /resources/font/impact.ttf
 
 /vendor/
+
+# User-accessible hook for adhoc debugging scripts
+/support/debug.php

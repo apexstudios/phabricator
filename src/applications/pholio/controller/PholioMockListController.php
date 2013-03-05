@@ -18,7 +18,8 @@ final class PholioMockListController extends PholioController {
 
     $query = id(new PholioMockQuery())
       ->setViewer($user)
-      ->needCoverFiles(true);
+      ->needCoverFiles(true)
+      ->needTokenCounts(true);
 
     $nav = $this->buildSideNav();
     $filter = $nav->selectFilter('view/'.$this->view, 'view/all');
@@ -39,14 +40,33 @@ final class PholioMockListController extends PholioController {
 
     $mocks = $query->executeWithCursorPager($pager);
 
+    $author_phids = array();
+    foreach ($mocks as $mock) {
+      $author_phids[] = $mock->getAuthorPHID();
+    }
+    $this->loadHandles($author_phids);
+
+
     $board = new PhabricatorPinboardView();
     foreach ($mocks as $mock) {
-      $board->addItem(
-        id(new PhabricatorPinboardItemView())
-          ->setHeader('M'.$mock->getID().' '.$mock->getName())
-          ->setURI('/M'.$mock->getID())
-          ->setImageURI($mock->getCoverFile()->getThumb220x165URI())
-          ->setImageSize(220, 165));
+      $item = new PhabricatorPinboardItemView();
+      $item->setHeader('M'.$mock->getID().' '.$mock->getName())
+           ->setURI('/M'.$mock->getID())
+           ->setImageURI($mock->getCoverFile()->getThumb220x165URI())
+           ->setImageSize(220, 165);
+
+      if ($mock->getAuthorPHID()) {
+        $author_handle = $this->getHandle($mock->getAuthorPHID());
+        $item->appendChild(
+          pht('Created by %s', $author_handle->renderLink()));
+      }
+      $datetime = phabricator_date($mock->getDateCreated(), $user);
+      $item->appendChild(
+        phutil_tag(
+          'div',
+          array(),
+          pht('Created on %s', $datetime)));
+      $board->addItem($item);
     }
 
     $content = array(
@@ -68,6 +88,7 @@ final class PholioMockListController extends PholioController {
       array(
         'title' => $title,
         'device' => true,
+        'dust' => true,
       ));
   }
 

@@ -7,6 +7,8 @@
  *           javelin-vector
  *           javelin-magical-init
  *           javelin-request
+ *           javelin-history
+ *           phabricator-keyboard-shortcut
  */
 JX.behavior('pholio-mock-view', function(config) {
   var is_dragging = false;
@@ -22,13 +24,72 @@ JX.behavior('pholio-mock-view', function(config) {
 
   var inline_comments = {};
 
-  function get_image(id) {
+
+/* -(  Stage  )-------------------------------------------------------------- */
+
+
+  var stage = (function() {
+    var loading = false;
+    var stageElement = JX.$(config.panelID);
+    var viewElement = JX.$(config.viewportID);
+    var reticles = [];
+
+    function begin_load() {
+      if (loading) {
+        return;
+      }
+      loading = true;
+      clear_reticles();
+      draw_loading();
+    }
+
+    function end_load() {
+      if (!loading) {
+        return;
+      }
+      loading = false;
+      draw_loading();
+    }
+
+    function draw_loading() {
+      JX.DOM.alterClass(stageElement, 'pholio-image-loading', loading);
+    }
+
+    function add_reticle(reticle) {
+      reticles.push(reticle);
+      viewElement.appendChild(reticle);
+    }
+
+    function clear_reticles() {
+      for (var ii = 0; ii < reticles.length; ii++) {
+        JX.DOM.remove(reticles[ii]);
+      }
+      reticles = [];
+    }
+
+    return {
+      beginLoad: begin_load,
+      endLoad: end_load,
+      addReticle: add_reticle,
+      clearReticles: clear_reticles
+    };
+  })();
+
+  function get_image_index(id) {
     for (var ii = 0; ii < config.images.length; ii++) {
       if (config.images[ii].id == id) {
-        return config.images[ii];
+        return ii;
       }
     }
     return null;
+  }
+
+  function get_image(id) {
+    var idx = get_image_index(id);
+    if (idx === null) {
+      return idx;
+    }
+    return config.images[idx];
   }
 
   function onload_image(id) {
@@ -40,6 +101,16 @@ JX.behavior('pholio-mock-view', function(config) {
 
     active_image.tag = this;
     redraw_image();
+  }
+
+  function switch_image(delta) {
+    if (!active_image) {
+      return;
+    }
+    var idx = get_image_index(active_image.id)
+    JX.log(idx);
+    idx = (idx + delta + config.images.length) % config.images.length;
+    select_image(config.images[idx].id);
   }
 
   function redraw_image() {
@@ -73,7 +144,8 @@ JX.behavior('pholio-mock-view', function(config) {
       viewport.style.top = '';
     }
 
-    // NOTE: This also clears inline comment reticles.
+    stage.endLoad();
+
     JX.DOM.setContent(viewport, tag);
 
     redraw_inlines(active_image.id);
@@ -82,6 +154,8 @@ JX.behavior('pholio-mock-view', function(config) {
   function select_image(image_id) {
     active_image = get_image(image_id);
     active_image.tag = null;
+
+    stage.beginLoad();
 
     var img = JX.$N('img', {className: 'pholio-mock-image'});
     img.onload = JX.bind(img, onload_image, active_image.id);
@@ -102,18 +176,24 @@ JX.behavior('pholio-mock-view', function(config) {
     }
 
     load_inline_comments();
+
+    if (image_id != config.selectedID) {
+      JX.History.replace(active_image.pageURI);
+    }
   }
 
   JX.Stratcom.listen(
-    'click',
+    ['mousedown', 'click'],
     'mock-thumbnail',
     function(e) {
+      if (!e.isNormalMouseEvent()) {
+        return;
+      }
       e.kill();
       select_image(e.getNodeData('mock-thumbnail').imageID);
     });
 
-  // Select and show the first image.
-  select_image(config.images[0].id);
+  select_image(config.selectedID);
 
   JX.Stratcom.listen('mousedown', 'mock-panel', function(e) {
     if (!e.isNormalMouseEvent()) {
@@ -212,6 +292,7 @@ JX.behavior('pholio-mock-view', function(config) {
 
     var comment_holder = JX.$('mock-inline-comments');
     JX.DOM.setContent(comment_holder, '');
+    stage.clearReticles();
 
     var inlines = inline_comments[active_image.id];
     if (!inlines || !inlines.length) {
@@ -241,7 +322,7 @@ JX.behavior('pholio-mock-view', function(config) {
 
       JX.Stratcom.addSigil(inlineSelection, "image_selection");
 
-      JX.DOM.appendContent(viewport, inlineSelection);
+      stage.addReticle(inlineSelection);
 
       position_inline_rectangle(inline, inlineSelection);
 
@@ -261,7 +342,8 @@ JX.behavior('pholio-mock-view', function(config) {
           {phid: inline.phid});
 
         JX.Stratcom.addSigil(inlineDraft, "image_selection");
-        JX.DOM.appendContent(viewport, inlineDraft);
+
+        stage.addReticle(inlineDraft);
       }
     }
   }
@@ -494,4 +576,19 @@ JX.behavior('pholio-mock-view', function(config) {
   JX.Stratcom.listen('resize', null, redraw_image);
   redraw_image();
 
+
+/* -(  Keyboard Shortcuts  )------------------------------------------------ */
+
+
+  new JX.KeyboardShortcut('j', 'Show next image.')
+    .setHandler(function() {
+      switch_image(1);
+    })
+    .register();
+
+  new JX.KeyboardShortcut('k', 'Show previous image.')
+    .setHandler(function() {
+      switch_image(-1);
+    })
+    .register();
 });
