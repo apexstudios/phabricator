@@ -108,7 +108,7 @@ final class PhabricatorProjectListController
     }
 
     $list = new PhabricatorObjectItemListView();
-    $list->setStackable();
+    $list->setStackable(true);
     foreach ($rows as $row) {
       $item = id(new PhabricatorObjectItemView())
         ->setHeader($row[0])
@@ -145,6 +145,7 @@ final class PhabricatorProjectListController
       array(
         'title' => pht('Projects'),
         'device' => true,
+        'dust' => true,
       ));
   }
 }

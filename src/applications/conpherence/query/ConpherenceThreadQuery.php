@@ -37,7 +37,7 @@ final class ConpherenceThreadQuery
     return $this;
   }
 
-  public function loadPage() {
+  protected function loadPage() {
     $table = new ConpherenceThread();
     $conn_r = $table->establishConnection('r');
 
@@ -113,7 +113,7 @@ final class ConpherenceThreadQuery
       ->setViewer($this->getViewer())
       ->withObjectPHIDs(array_keys($conpherences))
       ->needHandles(true)
-      ->loadPage();
+      ->execute();
     $transactions = mgroup($transactions, 'getObjectPHID');
     foreach ($conpherences as $phid => $conpherence) {
       $current_transactions = $transactions[$phid];
@@ -150,13 +150,6 @@ final class ConpherenceThreadQuery
     $participant_phids = array_mergev($participant_phids);
     $file_phids = array_mergev($file_phids);
 
-    // open tasks of all participants
-    $tasks = id(new ManiphestTaskQuery())
-      ->withOwners($participant_phids)
-      ->withStatus(ManiphestTaskQuery::STATUS_OPEN)
-      ->execute();
-    $tasks = mgroup($tasks, 'getOwnerPHID');
-
     // statuses of everyone currently in the conpherence
     // for a rolling one week window
     $start_of_week = phabricator_format_local_time(
@@ -191,7 +184,6 @@ final class ConpherenceThreadQuery
       $statuses = array_mergev($statuses);
       $statuses = msort($statuses, 'getDateFrom');
       $widget_data = array(
-        'tasks' => array_select_keys($tasks, $participant_phids),
         'statuses' => $statuses,
         'files' => array_select_keys($files, $conpherence->getFilePHIDs()),
       );

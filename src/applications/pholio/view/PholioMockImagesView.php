@@ -4,6 +4,15 @@ final class PholioMockImagesView extends AphrontView {
 
   private $mock;
   private $imageID;
+  private $requestURI;
+
+  public function setRequestURI(PhutilURI $request_uri) {
+    $this->requestURI = $request_uri;
+    return $this;
+  }
+  public function getRequestURI() {
+    return $this->requestURI;
+  }
 
   public function setImageID($image_id) {
     $this->imageID = $image_id;
@@ -40,28 +49,43 @@ final class PholioMockImagesView extends AphrontView {
     }
 
     foreach ($mock->getImages() as $image) {
+      $file = $image->getFile();
+      $metadata = $file->getMetadata();
+      $x = idx($metadata, PhabricatorFile::METADATA_IMAGE_WIDTH);
+      $y = idx($metadata, PhabricatorFile::METADATA_IMAGE_HEIGHT);
+
       $images[] = array(
         'id'      => $image->getID(),
         'fullURI' => $image->getFile()->getBestURI(),
         'pageURI' => '/M'.$mock->getID().'/'.$image->getID().'/',
+        'width'   => $x,
+        'height'  => $y,
+        'title'   => $file->getName(),
+        'desc'    => 'Lorem ipsum dolor sit amet: there is no way to set any '.
+                     'descriptive text yet; were there, it would appear here.',
       );
     }
 
+    $login_uri = id(new PhutilURI('/login/'))
+      ->setQueryParam('next', (string) $this->getRequestURI());
     $config = array(
       'mockID' => $mock->getID(),
       'panelID' => $panel_id,
       'viewportID' => $viewport_id,
       'images' => $images,
       'selectedID' => $selected_id,
+      'loggedIn' => $this->getUser()->isLoggedIn(),
+      'logInLink' => (string) $login_uri
     );
     Javelin::initBehavior('pholio-mock-view', $config);
 
     $mockview = '';
 
-    $mock_wrapper = phutil_tag(
+    $mock_wrapper = javelin_tag(
       'div',
       array(
         'id' => $viewport_id,
+        'sigil' => 'mock-viewport',
         'class' => 'pholio-mock-image-viewport'
       ),
       '');
@@ -70,7 +94,7 @@ final class PholioMockImagesView extends AphrontView {
       'div',
       array(
         'id' => $panel_id,
-        'sigil' => 'mock-panel',
+        'sigil' => 'mock-panel touchable',
         'class' => 'pholio-mock-image-panel',
       ),
       $mock_wrapper);
@@ -134,6 +158,6 @@ final class PholioMockImagesView extends AphrontView {
         ),
       array($mock_wrapper, $carousel_holder, $inline_comments_holder));
 
-    return $this->renderSingleView($mockview);
+    return $mockview;
   }
 }

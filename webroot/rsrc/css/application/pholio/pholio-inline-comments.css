@@ -5,26 +5,28 @@
 .pholio-inline-comment {
   border: 1px solid #555555;
   background: #353535;
-  margin: 0 0 5px 0;
+  margin: 0 10px 5px 10px;
   padding: 8px 10px;
-  color: #ccc;
 
   font-family: Verdana;
   font-size: 11px;
 }
 
 .pholio-mock-inline-comments {
-  width: 300px;
-  border-left: 1px solid #101010;
+  color: #cccccc;
   border-top: 1px solid #333;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  padding: 10px;
   background: #282828;
   overflow-x: auto;
   text-align: left;
+}
+
+.device-desktop .pholio-mock-inline-comments {
+  border-left: 1px solid #101010;
+  position: absolute;
+  width: 320px;
+  top: 0;
+  bottom: 0;
+  right: 0;
 }
 
 .pholio-inline-comment-dialog-title {
@@ -76,7 +78,16 @@
   color: #777777;
 }
 
-.pholio-inline-head-links a {
+.pholio-mock-inline-comments a {
   font-weight: normal;
   color: #2178db;
+}
+
+.device-desktop .pholio-mock-inline-comment-highlight.pholio-mock-select-fill {
+  opacity: 0.5;
+}
+
+.device-desktop .pholio-mock-inline-comment-highlight.pholio-inline-comment {
+  background: #555555;
+  border-color: #aaaaaa;
 }

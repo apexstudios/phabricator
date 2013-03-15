@@ -51,6 +51,7 @@ $package_spec = array(
     'javelin-behavior-konami',
     'javelin-behavior-aphlict-dropdown',
     'javelin-behavior-history-install',
+    'javelin-behavior-phabricator-gesture',
 
     'javelin-behavior-phabricator-active-nav',
     'javelin-behavior-phabricator-nav',
@@ -69,7 +70,6 @@ $package_spec = array(
     'aphront-form-view-css',
     'aphront-panel-view-css',
     'aphront-table-view-css',
-    'aphront-crumbs-view-css',
     'aphront-tokenizer-control-css',
     'aphront-typeahead-control-css',
     'aphront-list-filter-view-css',
@@ -136,6 +136,7 @@ $package_spec = array(
     'javelin-behavior-aphront-drag-and-drop-textarea',
     'javelin-behavior-phabricator-object-selector',
     'javelin-behavior-repository-crossreference',
+    'javelin-behavior-load-blame',
 
     'differential-inline-comment-editor',
     'javelin-behavior-differential-dropdown-menus',

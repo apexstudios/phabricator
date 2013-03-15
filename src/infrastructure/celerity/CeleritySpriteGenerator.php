@@ -214,7 +214,8 @@ final class CeleritySpriteGenerator {
 
 
   public function buildConpherenceSheet() {
-    $icons = $this->getDirectoryList('conpher_1x');
+    $name = 'conpherence';
+    $icons = $this->getDirectoryList($name.'_1x');
     $scales = array(
       '1x' => 1,
       '2x' => 2,
@@ -226,7 +227,7 @@ final class CeleritySpriteGenerator {
     foreach ($icons as $icon) {
       $color = preg_match('/_on/', $icon) ? 'on' : 'off';
 
-      $prefix = 'conpher_';
+      $prefix = $name.'_';
 
       $sprite = id(clone $template)
         ->setName($prefix.$icon);
@@ -247,7 +248,39 @@ final class CeleritySpriteGenerator {
       $sprites[] = $sprite;
     }
 
-    $sheet = $this->buildSheet('conpher', true);
+    $sheet = $this->buildSheet($name, true);
+    $sheet->setScales($scales);
+    foreach ($sprites as $sprite) {
+      $sheet->addSprite($sprite);
+    }
+
+    return $sheet;
+  }
+
+  public function buildDocsSheet() {
+    $icons = $this->getDirectoryList('docs_1x');
+    $scales = array(
+      '1x' => 1,
+      '2x' => 2,
+    );
+    $template = id(new PhutilSprite())
+      ->setSourceSize(32, 32);
+
+    $sprites = array();
+    $prefix = 'docs_';
+    foreach ($icons as $icon) {
+      $sprite = id(clone $template)
+        ->setName($prefix.$icon)
+        ->setTargetCSS('.'.$prefix.$icon);
+
+      foreach ($scales as $scale_key => $scale) {
+        $path = $this->getPath($prefix.$scale_key.'/'.$icon.'.png');
+        $sprite->setSourceFile($path, $scale);
+      }
+      $sprites[] = $sprite;
+    }
+
+    $sheet = $this->buildSheet('docs', true);
     $sheet->setScales($scales);
     foreach ($sprites as $sprite) {
       $sheet->addSprite($sprite);
