@@ -25,7 +25,8 @@ final class PhabricatorPackagerViewController
     $crumbs = $this->buildApplicationCrumbs();
     $crumbs->addCrumb(
       id(new PhabricatorCrumbView())
-        ->setHref($this->getApplicationURI('/view/'.$packageObject->getID().'/'))
+        ->setHref(
+          $this->getApplicationURI('/view/'.$packageObject->getID().'/'))
         ->setName($title));
 
     $actions = $this->buildActionView($packageObject);
@@ -72,7 +73,8 @@ final class PhabricatorPackagerViewController
     $view->addSectionHeader(pht("Info"));
     $view->addProperty(pht("Author"), $this->getHandle(
       $packageObject->getAuthorPHID())->renderLink());
-    $view->addProperty(pht("Location"), phutil_tag("em", array(), $packageObject->getPackageUrl()));
+    $view->addProperty(pht("Location"), phutil_tag("em", array(),
+      $packageObject->getPackageUrl()));
     $view->addTextContent(pht("Let's hope the download links on the right " .
       "actually work this time. Else it would be embarrasing."));
 
