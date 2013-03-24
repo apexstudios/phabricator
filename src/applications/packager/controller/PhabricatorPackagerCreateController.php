@@ -9,10 +9,6 @@ final class PhabricatorPackagerCreateController
     $request = $this->getRequest();
     $user = $request->getUser();
 
-    $packageObject = new PhabricatorFilePackage();
-
-    $packageObject->setAuthorPHID($user->getPHID());
-
     $e_url = null;
     $errors = array();
 
@@ -23,6 +19,8 @@ final class PhabricatorPackagerCreateController
         $e_url = pht("Required");
         $errors[] = pht("Package URL must not be empty!");
       } else {
+        $packageObject = new PhabricatorFilePackage();
+        $packageObject->setAuthorPHID($user->getPHID());
         $packageObject->setPackageUrl($url);
         $packageObject->setDownloads(0);
         $packageObject->save();
@@ -48,43 +46,25 @@ final class PhabricatorPackagerCreateController
         pht('Just paste a clean URL to the file in Amazon S3 here, '.
           'and everything will be fine.'));
 
-    $form = id(new AphrontFormView())
-      ->setUser($user)
+    $form = id(new AphrontFormLayoutView())
       ->appendChild($instructions)
       ->appendChild(
         id(new AphrontFormTextControl())
         ->setLabel(pht("Package Url"))
-        ->setName('url')
+        ->setName("url")
         ->setError($e_url)
         ->setValue("")
-        ->setCaption("The clean url to the file on S3"))
-      ->appendChild(
-        id(new AphrontFormSubmitControl())
-          ->setValue(pht('Register this package'))
-          ->addCancelButton($this->getApplicationURI()));
+        ->setCaption("The clean url to the file on S3"));
 
-    $panel = new AphrontPanelView();
-    $panel->setWidth(AphrontPanelView::WIDTH_FORM);
-    $panel->setHeader(pht('Register Package'));
-    $panel->setNoBackground();
-    $panel->appendChild($form);
+    $dialog = new AphrontDialogView();
+    $dialog->setUser($user);
+    $dialog->setTitle(pht("Register Package"));
+    $dialog->appendChild($form);
+    $dialog->addCancelButton($this->getApplicationURI());
+    $dialog->addSubmitButton(pht("Register this package"));
 
-    $crumbs = $this->buildApplicationCrumbs($this->buildSideNavView());
-    $crumbs->addCrumb(
-      id(new PhabricatorCrumbView())
-        ->setName(pht('Register Package'))
-        ->setHref($this->getApplicationURI().'register/'));
-
-    return $this->buildApplicationPage(
-      array(
-        $crumbs,
-        $error_view,
-        $panel,
-      ),
-      array(
-        'title' => pht('Register Package'),
-        'device' => true,
-      ));
+    $resp = new AphrontDialogResponse();
+    return $resp->setDialog($dialog);
   }
 
 }

@@ -3,7 +3,7 @@
 abstract class PhabricatorPackagerController
   extends PhabricatorController {
 
-  protected function buildSideNavView($for_app = false, $has_search = false) {
+  protected function buildSideNavView($for_app = false) {
     $nav = new AphrontSideNavFilterView();
     $nav->setBaseURI(new PhutilURI($this->getApplicationURI()));
 
@@ -16,12 +16,6 @@ abstract class PhabricatorPackagerController
 
     $nav->addLabel(pht('Packages'));
     $nav->addFilter('/', pht('All Packages'));
-    if ($has_search) {
-      $nav->addFilter('search',
-        pht('Search'),
-        $this->getRequest()->getRequestURI());
-    }
-
 
     return $nav;
   }
@@ -37,6 +31,7 @@ abstract class PhabricatorPackagerController
       id(new PhabricatorMenuItemView())
         ->setName(pht('Register new package'))
         ->setHref($this->getApplicationURI('/register/'))
+        ->setWorkflow(true)
         ->setIcon('create'));
 
     return $crumbs;
