@@ -126,6 +126,8 @@ final class PhabricatorEdgeConfig extends PhabricatorEdgeConstants {
 
       PhabricatorPHIDConstants::PHID_TYPE_PCKG  => 'PhabricatorFilePackage',
 
+      PhabricatorPHIDConstants::PHID_TYPE_PCKG  => 'PhabricatorFilePackage',
+
     );
 
     $class = idx($class_map, $phid_type);
