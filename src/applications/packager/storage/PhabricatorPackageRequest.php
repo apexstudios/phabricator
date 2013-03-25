@@ -18,6 +18,8 @@ class PhabricatorPackageRequest extends PhabricatorLiskDAO
 
   protected $packageID = 0;
 
+  protected $viewPolicy = PhabricatorPolicies::POLICY_USER;
+  protected $editPolicy = PhabricatorPolicies::POLICY_USER;
   protected $dateCreated;
   protected $dateModified;
 
