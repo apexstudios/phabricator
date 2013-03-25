@@ -10,7 +10,8 @@ class PhabricatorPackagerRequestListController
     $pager = new AphrontCursorPagerView();
     $pager->readFromRequest($request);
 
-    $packages = id(new PhabricatorPackageRequest())->loadAll();
+    $packages = id(new PhabricatorPackageRequest())
+      ->loadAllWhere('1 = 1 ORDER BY id DESC');
 
     $phids = mpull($packages, 'getAuthorPHID');
     $this->loadHandles($phids);
@@ -22,7 +23,7 @@ class PhabricatorPackagerRequestListController
 
     foreach ($packages as $package) {
       $item = new PhabricatorObjectItemView();
-      $item->setHeader(pht('Package RQ %s', $package->getID()));
+      $item->setHeader($this->buildRQName($package));
       $item->setHref('/PRQ'.$package->getID().'/');
 
       $item->addAttribute(

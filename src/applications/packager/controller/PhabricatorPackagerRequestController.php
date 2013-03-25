@@ -14,4 +14,9 @@ abstract class PhabricatorPackagerRequestController
     return $crumbs;
   }
 
+  protected function buildRQName(PhabricatorPackageRequest $package_request) {
+    return pht('Package RQ %s (%s)',
+      $package_request->getID(), $package_request->getFileName());
+  }
+
 }

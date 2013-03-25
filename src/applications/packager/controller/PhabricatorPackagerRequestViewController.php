@@ -39,7 +39,7 @@ class PhabricatorPackagerRequestViewController
 
     $crumbs = $this->buildApplicationCrumbs();
     $crumbs->addCrumb(id(new PhabricatorCrumbView())
-      ->setName(pht('Package RQ %s', $package_request->getID()))
+      ->setName($this->buildRQName($package_request))
       ->setHref($request->getRequestURI()));
 
     return $this->buildStandardPageResponse(
@@ -53,16 +53,16 @@ class PhabricatorPackagerRequestViewController
       ),
       array(
         'device' => true,
-        'title' => pht('Package RQ %s', $package_request->getID()),
-        'dust' => true,
+        'title'  => $this->buildRQName($package_request),
+        'dust'   => true,
       ));
   }
 
-  private function buildHeader(PhabricatorPackageRequest $request) {
+  private function buildHeader(PhabricatorPackageRequest $package_request) {
     $header = id(new PhabricatorHeaderView())
-      ->setHeader(pht('Package RQ %s', $request->getID()));
+      ->setHeader($this->buildRQName($package_request));
 
-    $status = $request->getStatus();
+    $status = $package_request->getStatus();
     switch ($status) {
       case PhabricatorPackageRequestConstants::STATUS_ISSUED:
         $label = pht('Issued');
@@ -89,21 +89,56 @@ class PhabricatorPackagerRequestViewController
     return $header;
   }
 
-  protected function buildActionList(PhabricatorPackageRequest $request) {
+  protected function buildActionList(
+    PhabricatorPackageRequest $package_request) {
+
     $view = new PhabricatorActionListView();
-    $view->setObject($request);
+    $view->setObject($package_request);
     $view->setUser($this->getRequest()->getUser());
+
+    switch ($package_request->getStatus()) {
+      case PhabricatorPackageRequestConstants::STATUS_OPEN:
+        $view->addAction(id(new PhabricatorActionView())
+          ->setName(pht('Edit Request (this is your last chance!)'))
+          ->setIcon('edit')
+          ->setHref(
+            $this->getApplicationURI(
+              '/request/edit/'.$package_request->getID().'/')));
+
+        // Fallthrough
+      case PhabricatorPackageRequestConstants::STATUS_ISSUED:
+        $is_open = $package_request->getStatus() ==
+            PhabricatorPackageRequestConstants::STATUS_OPEN;
+        $name = $is_open ?
+          pht('Issue Pack Request') : pht('Re-issue Pack Request');
+        $icon = $is_open ? 'start-sandcastle' : 'refresh';
+
+        $view->addAction(id(new PhabricatorActionView())
+          ->setName($name)
+          ->setIcon($icon)
+          ->setWorkflow(true)
+          ->setHref(
+            $this->getApplicationURI(
+              '/request/issue/'.$package_request->getID().'/')));
+        break;
+    }
 
     return $view;
   }
 
-  protected function buildPropertyList(PhabricatorPackageRequest $request,
+  protected function buildPropertyList(
+    PhabricatorPackageRequest $package_request,
     array $subscribers) {
     $view = new PhabricatorPropertyListView();
 
     $view->addProperty(pht('Requester'),
-      $this->getHandle($request->getAuthorPHID())->renderLink());
-    $view->addProperty(pht('Repo URL'), $request->getUrl());
+      $this->getHandle($package_request->getAuthorPHID())->renderLink());
+    $view->addProperty(pht('Requested on'),
+      phabricator_datetime(
+        $package_request->getDateCreated(), $this->getRequest()->getUser()));
+    $view->addProperty(pht('Repo URL'),
+      sprintf('%s @ %s',
+        $package_request->getUrl(), $package_request->getRevision()));
 
     $subscriber_list = pht('None');
     if ($subscribers) {
@@ -115,14 +150,19 @@ class PhabricatorPackagerRequestViewController
     }
     $view->addProperty(pht('Subscribers'), $subscriber_list);
 
+    if ($package_request->getDescription()) {
+      $view->addSectionHeader(pht('Description'));
+      $view->addTextContent($package_request->getDescription());
+    }
+
     return $view;
   }
 
-  protected function buildXActionView(PhabricatorPackageRequest $request) {
-    // Stub
+  protected function buildXActionView(
+    PhabricatorPackageRequest $package_request) {
     $xactions = id(new PhabricatorPackageRequestTransactionQuery())
       ->setViewer($this->getRequest()->getUser())
-      ->withObjectPHIDs(array($request->getPHID()))
+      ->withObjectPHIDs(array($package_request->getPHID()))
       ->execute();
 
     $engine = id(new PhabricatorMarkupEngine())
@@ -143,27 +183,29 @@ class PhabricatorPackagerRequestViewController
     return $timeline;
   }
 
-  protected function buildCommentForm(PhabricatorPackageRequest $request) {
+  protected function buildCommentForm(
+    PhabricatorPackageRequest $package_request) {
     $is_serious = PhabricatorEnv::getEnvConfig('phabricator.serious-business');
 
     $add_comment_header = id(new PhabricatorHeaderView())
       ->setHeader(
         $is_serious
           ? pht('Add Comment')
-          : pht('Do something stupid'));
+          : pht('Do something silly'));
 
     $submit_button_name = $is_serious
       ? pht('Add Comment')
-      : pht('Waste my coins');
+      : pht('Waste your coins');
 
     $draft = PhabricatorDraft::newFromUserAndKey($this->getRequest()->getUser(),
-      $request->getPHID());
+      $package_request->getPHID());
 
     $add_comment_form = id(new PhabricatorApplicationTransactionCommentView())
       ->setUser($this->getRequest()->getUser())
       ->setDraft($draft)
       ->setAction(
-        $this->getApplicationURI('/request/comment/'.$request->getID().'/'))
+        $this->getApplicationURI(
+          '/request/comment/'.$package_request->getID().'/'))
       ->setSubmitButtonName($submit_button_name);
 
     return array(
