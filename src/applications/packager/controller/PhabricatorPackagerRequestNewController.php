@@ -21,7 +21,7 @@ class PhabricatorPackagerRequestNewController
     if ($request->isFormPost()) {
       // Validate and save package request
 
-      if (!(id(new PhutilURI($repo_url))->getProtocol())) {
+      if (!strlen($repo_url) || id(new PhutilURI($repo_url))->getProtocol()) {
         $errors[] = pht('Invalid URL given');
         $e_url = pht('Invalid');
       }
@@ -64,9 +64,8 @@ class PhabricatorPackagerRequestNewController
         ->setErrors($errors);
     }
 
-    $repo_instructions = hsprintf('%s<ul><li><tt>https://subversion.assembla'.
-      '.com/svn/ap_hcaw/trunk/</tt></li><li><tt>https://subversion.assembla'.
-      '.com/svn/ap_hcaw/branches/release/</tt></li></ul>',
+    $repo_instructions = hsprintf('%s<ul><li><tt>/trunk/</tt></li>'.
+      '<li><tt>/branches/release/</tt></li></ul>',
       pht('Specify the url to the repository, '.
       'including trunk or branch. Examples:'));
 
@@ -80,7 +79,8 @@ class PhabricatorPackagerRequestNewController
       ->appendChild(id(new AphrontFormTextControl())
         ->setName('repo-url')
         ->setLabel(pht('Repo URL'))
-        ->setCaption('Currently supports only SVN. Should pose no trouble')
+        ->setCaption('Currently supports only SVN. Should pose no trouble. '.
+          'https://subversion.assembla.com/svn/ap_hcaw/ is being prepended.')
         ->setValue($repo_url)
         ->setError($e_url))
       ->appendChild($rev_instructions)
