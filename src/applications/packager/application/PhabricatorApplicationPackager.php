@@ -39,6 +39,8 @@ final class PhabricatorApplicationPackager extends PhabricatorApplication {
             'PhabricatorPackagerRequestEditController',
           'issue/(?P<id>[1-9]\d*)/' =>
             'PhabricatorPackagerRequestIssueController',
+          'register/(?P<id>[1-9]\d*)/' =>
+            'PhabricatorPackagerRequestRegisterController',
         ),
       ),
       '/PRQ(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerRequestViewController',
