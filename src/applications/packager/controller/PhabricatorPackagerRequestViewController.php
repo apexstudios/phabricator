@@ -21,9 +21,13 @@ class PhabricatorPackagerRequestViewController
     $subscribers = PhabricatorSubscribersQuery::loadSubscribersForPHID(
       $package_request->getPHID());
 
+
     $phids = array(
       $package_request->getAuthorPHID(),
-    ) + $subscribers;
+    );
+    if ($subscribers) {
+      $phids = array_merge($phids, $subscribers);
+    }
     $this->loadHandles($phids);
 
     $header = $this->buildHeader($package_request);
@@ -31,6 +35,7 @@ class PhabricatorPackagerRequestViewController
     $property = $this->buildPropertyList($package_request, $subscribers);
 
     $xaction = $this->buildXActionView($package_request);
+    $comment_form = $this->buildCommentForm($package_request);
 
     $crumbs = $this->buildApplicationCrumbs();
     $crumbs->addCrumb(id(new PhabricatorCrumbView())
@@ -44,6 +49,7 @@ class PhabricatorPackagerRequestViewController
         $action,
         $property,
         $xaction,
+        $comment_form,
       ),
       array(
         'device' => true,
@@ -135,6 +141,35 @@ class PhabricatorPackagerRequestViewController
       ->setTransactions($xactions)
       ->setMarkupEngine($engine);
     return $timeline;
+  }
+
+  protected function buildCommentForm(PhabricatorPackageRequest $request) {
+    $is_serious = PhabricatorEnv::getEnvConfig('phabricator.serious-business');
+
+    $add_comment_header = id(new PhabricatorHeaderView())
+      ->setHeader(
+        $is_serious
+          ? pht('Add Comment')
+          : pht('Do something stupid'));
+
+    $submit_button_name = $is_serious
+      ? pht('Add Comment')
+      : pht('Waste my coins');
+
+    $draft = PhabricatorDraft::newFromUserAndKey($this->getRequest()->getUser(),
+      $request->getPHID());
+
+    $add_comment_form = id(new PhabricatorApplicationTransactionCommentView())
+      ->setUser($this->getRequest()->getUser())
+      ->setDraft($draft)
+      ->setAction(
+        $this->getApplicationURI('/request/comment/'.$request->getID().'/'))
+      ->setSubmitButtonName($submit_button_name);
+
+    return array(
+      $add_comment_header,
+      $add_comment_form,
+    );
   }
 
 }

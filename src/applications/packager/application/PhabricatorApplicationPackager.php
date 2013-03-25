@@ -33,6 +33,7 @@ final class PhabricatorApplicationPackager extends PhabricatorApplication {
         'request/' => array(
           '' => 'PhabricatorPackagerRequestListController',
           'new/' => 'PhabricatorPackagerRequestNewController',
+          'comment/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerRequestCommentController',
         ),
       ),
       '/PRQ(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerRequestViewController',
