@@ -9,6 +9,8 @@ CREATE TABLE {$NAMESPACE}_packager.package_request (
   fileName VARCHAR(255) NOT NULL COLLATE utf8_bin,
   description TEXT NOT NULL COLLATE utf8_bin,
   packageID INT UNSIGNED NOT NULL,
+  viewPolicy VARCHAR(64) NOT NULL COLLATE utf8_bin,
+  editPolicy VARCHAR(64) NOT NULL COLLATE utf8_bin,
   dateCreated INT UNSIGNED NOT NULL,
   dateModified INT UNSIGNED NOT NULL,
 
