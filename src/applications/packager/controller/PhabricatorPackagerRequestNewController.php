@@ -51,9 +51,7 @@ class PhabricatorPackagerRequestNewController
         $pack_request->setAuthorPHID($user->getPHID());
         $pack_request->save();
 
-        $uri = sprintf('%srequest/view/%d/',
-          $this->getApplicationURI(),
-          $pack_request->getID());
+        $uri = sprintf('PRQ%d/', $pack_request->getID());
         return id(new AphrontRedirectResponse())->setURI($uri);
       }
     }

@@ -125,8 +125,7 @@ final class PhabricatorEdgeConfig extends PhabricatorEdgeConstants {
       PhabricatorPHIDConstants::PHID_TYPE_WIKI  => 'PhrictionDocument',
 
       PhabricatorPHIDConstants::PHID_TYPE_PCKG  => 'PhabricatorFilePackage',
-
-      PhabricatorPHIDConstants::PHID_TYPE_PCKG  => 'PhabricatorFilePackage',
+      PhabricatorPHIDConstants::PHID_TYPE_PKRQ  => 'PhabricatorPackageRequest',
 
     );
 
