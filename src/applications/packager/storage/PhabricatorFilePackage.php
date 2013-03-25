@@ -35,6 +35,11 @@ final class PhabricatorFilePackage extends PhabricatorLiskDAO
     return $this->packageRequest;
   }
 
+  public function getDownloadURI()
+  {
+    return '/packager/download/'.$this->getID().'/';
+  }
+
   public function getApplicationName() {
     return 'packager';
   }
