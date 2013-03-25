@@ -32,11 +32,10 @@ final class PhabricatorPackagerListController
     $nodata = pht('There are no registered packages yet.');
 
     $list = new PhabricatorObjectItemListView();
-    // $list->setStackable();
     $list->setNoDataString($nodata);
 
+    $this->loadHandles(mpull($package_entries, 'getAuthorPHID'));
     foreach ($package_entries as $package) {
-    $this->loadHandles(array($package->getAuthorPHID()));
       $url = $package->getPackageUrl();
       $fileName = basename($url);
 
