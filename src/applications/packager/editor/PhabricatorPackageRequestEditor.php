@@ -9,6 +9,10 @@ final class PhabricatorPackageRequestEditor
     $types[] = PhabricatorTransactions::TYPE_COMMENT;
     $types[] = PhabricatorPackageRequestTransactionType::TYPE_ISSUE;
     $types[] = PhabricatorPackageRequestTransactionType::TYPE_REGISTER;
+    $types[] = PhabricatorPackageRequestTransactionType::TYPE_DESC;
+    $types[] = PhabricatorPackageRequestTransactionType::TYPE_FILE;
+    $types[] = PhabricatorPackageRequestTransactionType::TYPE_REV;
+    $types[] = PhabricatorPackageRequestTransactionType::TYPE_URL;
 
     return $types;
   }
@@ -19,8 +23,17 @@ final class PhabricatorPackageRequestEditor
 
     switch ($xaction->getTransactionType()) {
       case PhabricatorPackageRequestTransactionType::TYPE_ISSUE:
-      case PhabricatorPackageRequestTransactionType::TYPE_REGISTER:
         return $object->getStatus();
+      case PhabricatorPackageRequestTransactionType::TYPE_FILE:
+        return $object->getFileName();
+      case PhabricatorPackageRequestTransactionType::TYPE_DESC:
+        return $object->getDescription();
+      case PhabricatorPackageRequestTransactionType::TYPE_REV:
+        return $object->getRevision();
+      case PhabricatorPackageRequestTransactionType::TYPE_URL:
+        return $object->getUrl();
+      case PhabricatorPackageRequestTransactionType::TYPE_REGISTER:
+        return $object->getPackageID();
     }
   }
 
@@ -29,6 +42,10 @@ final class PhabricatorPackageRequestEditor
     PhabricatorApplicationTransaction $xaction) {
 
     switch ($xaction->getTransactionType()) {
+      case PhabricatorPackageRequestTransactionType::TYPE_DESC:
+      case PhabricatorPackageRequestTransactionType::TYPE_FILE:
+      case PhabricatorPackageRequestTransactionType::TYPE_REV:
+      case PhabricatorPackageRequestTransactionType::TYPE_URL:
       case PhabricatorPackageRequestTransactionType::TYPE_ISSUE:
       case PhabricatorPackageRequestTransactionType::TYPE_REGISTER:
         return $xaction->getNewValue();
@@ -41,9 +58,20 @@ final class PhabricatorPackageRequestEditor
 
     switch ($xaction->getTransactionType()) {
       case PhabricatorPackageRequestTransactionType::TYPE_ISSUE:
-      case PhabricatorPackageRequestTransactionType::TYPE_REGISTER:
-        $object->setStatus($xaction->getNewValue());
+        $object->setStatus(PhabricatorPackageRequestConstants::STATUS_ISSUED);
         break;
+      case PhabricatorPackageRequestTransactionType::TYPE_REGISTER:
+        $object->setStatus(PhabricatorPackageRequestConstants::STATUS_PACKAGED);
+        $object->setPackageID($xaction->getNewValue());
+        break;
+      case PhabricatorPackageRequestTransactionType::TYPE_DESC:
+        return $object->setDescription($xaction->getNewValue());
+      case PhabricatorPackageRequestTransactionType::TYPE_FILE:
+        return $object->setFileName($xaction->getNewValue());
+      case PhabricatorPackageRequestTransactionType::TYPE_REV:
+        return $object->setRevision($xaction->getNewValue());
+      case PhabricatorPackageRequestTransactionType::TYPE_URL:
+        return $object->setUrl($xaction->getNewValue());
     }
   }
 
@@ -59,6 +87,10 @@ final class PhabricatorPackageRequestEditor
 
     $type = $u->getTransactionType();
     switch ($type) {
+      case PhabricatorPackageRequestTransactionType::TYPE_DESC:
+      case PhabricatorPackageRequestTransactionType::TYPE_FILE:
+      case PhabricatorPackageRequestTransactionType::TYPE_REV:
+      case PhabricatorPackageRequestTransactionType::TYPE_URL:
       case PhabricatorPackageRequestTransactionType::TYPE_ISSUE:
       case PhabricatorPackageRequestTransactionType::TYPE_REGISTER:
         return $v;
