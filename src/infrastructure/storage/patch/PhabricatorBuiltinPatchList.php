@@ -1173,6 +1173,14 @@ final class PhabricatorBuiltinPatchList extends PhabricatorSQLPatchList {
         'type'    => 'sql',
         'name'    => $this->getPatchPath('20130226.xpackager.sql'),
       ),
+      '20130325.packager.sql' => array(
+        'type'    => 'sql',
+        'name'    => $this->getPatchPath('20130325.packager.sql'),
+      ),
+      '20130325.packagerrequest.sql' => array(
+        'type'    => 'sql',
+        'name'    => $this->getPatchPath('20130325.packagerrequest.sql'),
+      ),
       '20130226.commitkey.sql' => array(
         'type'    => 'sql',
         'name'    => $this->getPatchPath('20130226.commitkey.sql'),
