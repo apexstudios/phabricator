@@ -49,7 +49,7 @@ class PhabricatorPackagerRequestIssueController
           'InstanceCount' => 1,
           'Type' => 'one-time',
           'LaunchSpecification' => array(
-            'ImageId' => 'ami-9cfd66f5',
+            'ImageId' => 'ami-debf24b7',
             'KeyName' => 'use-key1',
             'InstanceType' => 'm1.medium',
             'SecurityGroupIds' => array('sg-78bc9510'),
