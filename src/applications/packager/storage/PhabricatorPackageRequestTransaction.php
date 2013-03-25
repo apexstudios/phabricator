@@ -87,9 +87,9 @@ final class PhabricatorPackageRequestTransaction
   public function getColor() {
     switch ($this->getTransactionType()) {
       case PhabricatorPackageRequestTransactionType::TYPE_REGISTER:
-        return PhabricatorTransactions::COLOR_BLUE;
+        return PhabricatorTransactions::COLOR_SKY;
       case PhabricatorPackageRequestTransactionType::TYPE_ISSUE:
-          return PhabricatorTransactions::COLOR_GREEN;
+        return PhabricatorTransactions::COLOR_BLUE;
     }
 
     return parent::getColor();
