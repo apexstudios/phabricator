@@ -29,7 +29,7 @@ class PhabricatorPackageRequest extends PhabricatorLiskDAO
     }
 
     if (!strlen($rev)) {
-      return true;
+      return false;
     }
 
     if (is_int($rev) || ctype_digit($rev)) {
