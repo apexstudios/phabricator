@@ -120,6 +120,14 @@ class PhabricatorPackagerRequestViewController
           ->setHref(
             $this->getApplicationURI(
               '/request/issue/'.$package_request->getID().'/')));
+
+        $view->addAction(id(new PhabricatorActionView())
+          ->setName(pht('Register Package'))
+          ->setIcon('link')
+          ->setWorkflow(true)
+          ->setHref(
+            $this->getApplicationURI(
+              '/request/register/'.$package_request->getID().'/')));
         break;
     }
 
@@ -149,6 +157,18 @@ class PhabricatorPackagerRequestViewController
       $subscriber_list = phutil_implode_html(', ', $subscriber_list);
     }
     $view->addProperty(pht('Subscribers'), $subscriber_list);
+
+    $pid = $package_request->getPackageID();
+    if ($pid) {
+      $package = id(new PhabricatorFilePackage())->load($pid);
+      $view->addSectionHeader(pht('Package'));
+      $view->addProperty(pht('Package'), phutil_tag(
+        'a',
+        array(
+          'href' => $package->getDownloadURI(),
+        ),
+        pht('PCKG%s', $pid)));
+    }
 
     if ($package_request->getDescription()) {
       $view->addSectionHeader(pht('Description'));

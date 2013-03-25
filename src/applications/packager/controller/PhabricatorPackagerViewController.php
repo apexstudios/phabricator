@@ -72,14 +72,19 @@ final class PhabricatorPackagerViewController
     $package_request = $package_object->loadPackageRequest();
     $package_request_link = null;
     if ($package_request->getID()) {
-      $package_request_uri = $this->getApplicationURI(
-        '/request/view/'.$package_request->getID().'/');
+      $package_request_uri = '/PRQ'.$package_request->getID().'/';
       $package_request_link = phutil_tag(
         'a',
         array(
           'href' => $package_request_uri,
         ),
-        $package_request->getPHID());
+        pht('PRQ%s', $package_request->getID()));
+
+      $package_request_link = id(new PhabricatorTagView())
+        ->setName(pht('PRQ%s', $package_request->getID()))
+        ->setHref($package_request_uri)
+        ->setWorkflow(true)
+        ->setType(PhabricatorTagView::TYPE_OBJECT);
     }
 
     $view->addSectionHeader(pht("Info"));
