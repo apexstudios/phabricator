@@ -83,7 +83,6 @@ final class PhabricatorPackagerViewController
       $package_request_link = id(new PhabricatorTagView())
         ->setName(pht('PRQ%s', $package_request->getID()))
         ->setHref($package_request_uri)
-        ->setWorkflow(true)
         ->setType(PhabricatorTagView::TYPE_OBJECT);
     }
 

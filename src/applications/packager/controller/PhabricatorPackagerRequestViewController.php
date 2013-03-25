@@ -165,7 +165,7 @@ class PhabricatorPackagerRequestViewController
       $view->addProperty(pht('Package'), phutil_tag(
         'a',
         array(
-          'href' => $package->getDownloadURI(),
+          'href' => $this->getApplicationURI('/view/'.$pid.'/'),
         ),
         pht('PCKG%s', $pid)));
     }

@@ -1182,6 +1182,7 @@ phutil_register_library_map(array(
     'PhabricatorPackagerRequestIssueController' => 'applications/packager/controller/PhabricatorPackagerRequestIssueController.php',
     'PhabricatorPackagerRequestListController' => 'applications/packager/controller/PhabricatorPackagerRequestListController.php',
     'PhabricatorPackagerRequestNewController' => 'applications/packager/controller/PhabricatorPackagerRequestNewController.php',
+    'PhabricatorPackagerRequestRegisterController' => 'applications/packager/controller/PhabricatorPackagerRequestRegisterController.php',
     'PhabricatorPackagerRequestViewController' => 'applications/packager/controller/PhabricatorPackagerRequestViewController.php',
     'PhabricatorPackagerTransactionType' => 'applications/packager/constants/PhabricatorPackagerTransactionType.php',
     'PhabricatorPackagerViewController' => 'applications/packager/controller/PhabricatorPackagerViewController.php',
@@ -2823,6 +2824,7 @@ phutil_register_library_map(array(
     'PhabricatorPackagerRequestIssueController' => 'PhabricatorPackagerRequestController',
     'PhabricatorPackagerRequestListController' => 'PhabricatorPackagerRequestController',
     'PhabricatorPackagerRequestNewController' => 'PhabricatorPackagerRequestController',
+    'PhabricatorPackagerRequestRegisterController' => 'PhabricatorPackagerRequestController',
     'PhabricatorPackagerRequestViewController' => 'PhabricatorPackagerRequestController',
     'PhabricatorPackagerViewController' => 'PhabricatorPackagerController',
     'PhabricatorPaste' =>
