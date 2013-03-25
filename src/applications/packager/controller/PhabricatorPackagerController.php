@@ -16,6 +16,8 @@ abstract class PhabricatorPackagerController
 
     $nav->addLabel(pht('Packages'));
     $nav->addFilter('/', pht('All Packages'));
+    $nav->addLabel(pht('Package Requests'));
+    $nav->addFilter('request', pht('Active Requests'), '/packager/request/');
 
     return $nav;
   }
@@ -33,6 +35,13 @@ abstract class PhabricatorPackagerController
         ->setHref($this->getApplicationURI('/register/'))
         ->setWorkflow(true)
         ->setIcon('create'));
+
+    $crumbs->addAction(
+      id(new PhabricatorMenuItemView())
+        ->setName(pht('Request new package'))
+        ->setHref($this->getApplicationURI('/request/new/'))
+        ->setWorkflow(true)
+        ->setIcon('tag'));
 
     return $crumbs;
   }

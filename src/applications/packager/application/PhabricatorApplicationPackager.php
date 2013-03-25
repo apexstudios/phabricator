@@ -30,6 +30,12 @@ final class PhabricatorApplicationPackager extends PhabricatorApplication {
         'view/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerViewController',
         'download/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerDownloadController',
         'edit/(?P<id>[1-9]\d*)/' => 'PhabricatorPackagerEditController',
+        'request/' => array(
+          '' => 'PhabricatorPackagerRequestListController',
+          'new/' => 'PhabricatorPackagerRequestNewController',
+          'view/(?P<id>[1-9]\d*)/' =>
+          'PhabricatorPackagerRequestViewController',
+        )
       ),
     );
   }
