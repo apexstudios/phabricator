@@ -3,7 +3,8 @@
 class PhabricatorPackageRequest extends PhabricatorLiskDAO
   implements
     PhabricatorSubscribableInterface,
-    PhabricatorPolicyInterface {
+    PhabricatorPolicyInterface,
+    PhabricatorApplicationTransactionInterface {
 
   protected $phid;
   protected $authorPHID;
@@ -88,6 +89,14 @@ class PhabricatorPackageRequest extends PhabricatorLiskDAO
 
   public function isAutomaticallySubscribed($phid) {
     return $this->getAuthorPHID() == $phid;
+  }
+
+  public function getApplicationTransactionEditor() {
+    return new PhabricatorPackageRequestEditor();
+  }
+
+  public function getApplicationTransactionObject() {
+    return new PhabricatorPackageRequestTransaction();
   }
 
 }

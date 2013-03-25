@@ -30,7 +30,7 @@ class PhabricatorPackagerRequestViewController
     $action = $this->buildActionList($package_request);
     $property = $this->buildPropertyList($package_request, $subscribers);
 
-    $xaction = null;
+    $xaction = $this->buildXActionView($package_request);
 
     $crumbs = $this->buildApplicationCrumbs();
     $crumbs->addCrumb(id(new PhabricatorCrumbView())
@@ -114,7 +114,27 @@ class PhabricatorPackagerRequestViewController
 
   protected function buildXActionView(PhabricatorPackageRequest $request) {
     // Stub
-    return null;
+    $xactions = id(new PhabricatorPackageRequestTransactionQuery())
+      ->setViewer($this->getRequest()->getUser())
+      ->withObjectPHIDs(array($request->getPHID()))
+      ->execute();
+
+    $engine = id(new PhabricatorMarkupEngine())
+      ->setViewer($this->getRequest()->getUser());
+    foreach ($xactions as $xaction) {
+      if ($xaction->getComment()) {
+        $engine->addObject(
+          $xaction->getComment(),
+          PhabricatorApplicationTransactionComment::MARKUP_FIELD_COMMENT);
+      }
+    }
+    $engine->process();
+
+    $timeline = id(new PhabricatorApplicationTransactionView())
+      ->setUser($this->getRequest()->getUser())
+      ->setTransactions($xactions)
+      ->setMarkupEngine($engine);
+    return $timeline;
   }
 
 }
