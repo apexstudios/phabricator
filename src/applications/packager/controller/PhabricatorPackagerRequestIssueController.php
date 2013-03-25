@@ -96,7 +96,7 @@ class PhabricatorPackagerRequestIssueController
           'as well as requesting duplicate pack requests.'))
         ->addCancelButton($this->getApplicationURI('/request/'),
           pht('Save my wallet!'))
-        ->addSubmitButton(pht('Once more unto the breah!'));
+        ->addSubmitButton(pht('Once more unto the breach!'));
       return id(new AphrontDialogResponse())->setDialog($dialog);
     }
   }

@@ -7,35 +7,38 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "88a14af265e65363b1a11d659ae0bbbd0cb00d75"
+                "reference": "db12910b1197d36cfbffe03132864e5455c7750a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/88a14af265e65363b1a11d659ae0bbbd0cb00d75",
-                "reference": "88a14af265e65363b1a11d659ae0bbbd0cb00d75",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/db12910b1197d36cfbffe03132864e5455c7750a",
+                "reference": "db12910b1197d36cfbffe03132864e5455c7750a",
                 "shasum": ""
             },
             "require": {
-                "guzzle/guzzle": ">=3.2,<3.3",
+                "guzzle/guzzle": ">=3.3,<3.4",
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "doctrine/cache": "1.*",
+                "doctrine/common": "2.3.*",
                 "ext-apc": "*",
+                "ext-openssl": "*",
                 "monolog/monolog": "1.4.*",
                 "phpunit/phpunit": "3.7.*",
-                "symfony/class-loader": "2.*"
+                "symfony/class-loader": "2.*",
+                "symfony/yaml": "2.*"
             },
             "suggest": {
                 "doctrine/cache": "Adds support for caching of credentials and responses",
                 "ext-apc": "Allows service description opcode caching, request and response caching, and credentials caching",
-                "monolog/monolog": "Adds support for logging HTTP requests and responses"
+                "ext-openssl": "Allows working with CloudFront private distributions and verifying received SNS messages",
+                "monolog/monolog": "Adds support for logging HTTP requests and responses",
+                "symfony/yaml": "Eases the ability to write manifests for creating jobs in AWS Import/Export"
             },
-            "time": "2013-02-24 06:21:08",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -62,7 +65,8 @@
                 "ec2",
                 "s3",
                 "sdk"
-            ]
+            ],
+            "time": "2013-03-22 02:12:43"
         },
         {
             "name": "guzzle/guzzle",
@@ -70,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "9ed3dcc413a8f9ddeca9546b9ce11cf5f8e6c7e9"
+                "reference": "f582f74f0789ddee11edcd7d3a87b68f32a06047"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/9ed3dcc413a8f9ddeca9546b9ce11cf5f8e6c7e9",
-                "reference": "9ed3dcc413a8f9ddeca9546b9ce11cf5f8e6c7e9",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f582f74f0789ddee11edcd7d3a87b68f32a06047",
+                "reference": "f582f74f0789ddee11edcd7d3a87b68f32a06047",
                 "shasum": ""
             },
             "require": {
@@ -98,6 +102,7 @@
                 "guzzle/plugin-cache": "self.version",
                 "guzzle/plugin-cookie": "self.version",
                 "guzzle/plugin-curlauth": "self.version",
+                "guzzle/plugin-error-response": "self.version",
                 "guzzle/plugin-history": "self.version",
                 "guzzle/plugin-log": "self.version",
                 "guzzle/plugin-md5": "self.version",
@@ -110,17 +115,17 @@
                 "doctrine/cache": "*",
                 "monolog/monolog": "1.*",
                 "phpunit/phpunit": "3.7.*",
+                "psr/log": "1.0.*",
                 "symfony/class-loader": "*",
                 "zend/zend-cache1": "1.12",
                 "zend/zend-log1": "1.12",
                 "zendframework/zend-cache": "2.0.*",
                 "zendframework/zend-log": "2.0.*"
             },
-            "time": "2013-02-24 03:42:51",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2-dev"
+                    "dev-master": "3.3-dev"
                 }
             },
             "autoload": {
@@ -154,7 +159,8 @@
                 "http client",
                 "rest",
                 "web service"
-            ]
+            ],
+            "time": "2013-03-21 00:13:21"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -181,7 +187,6 @@
                 "symfony/dependency-injection": "2.2.*",
                 "symfony/http-kernel": "2.2.*"
             },
-            "time": "2013-02-11 11:27:01",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -208,7 +213,8 @@
                 }
             ],
             "description": "Symfony EventDispatcher Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2013-02-11 11:27:01"
         }
     ],
     "packages-dev": null,
