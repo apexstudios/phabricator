@@ -42,6 +42,9 @@ final class PhabricatorEdgeConfig extends PhabricatorEdgeConstants {
   const TYPE_OBJECT_HAS_FILE            = 25;
   const TYPE_FILE_HAS_OBJECT            = 26;
 
+  const TYPE_ACCOUNT_HAS_MEMBER         = 27;
+  const TYPE_MEMBER_HAS_ACCOUNT         = 28;
+
   const TYPE_TEST_NO_CYCLE              = 9000;
 
   const TYPE_OBJECT_HAS_DOWNLOADER      = 10001;
@@ -90,6 +93,9 @@ final class PhabricatorEdgeConfig extends PhabricatorEdgeConstants {
 
       self::TYPE_OBJECT_HAS_DOWNLOADER => self::TYPE_DOWNLOADED_AN_OBJECT,
       self::TYPE_DOWNLOADED_AN_OBJECT => self::TYPE_OBJECT_HAS_DOWNLOADER,
+
+      self::TYPE_ACCOUNT_HAS_MEMBER => self::TYPE_MEMBER_HAS_ACCOUNT,
+      self::TYPE_MEMBER_HAS_ACCOUNT => self::TYPE_ACCOUNT_HAS_MEMBER,
     );
 
     return idx($map, $edge_type);
@@ -127,6 +133,7 @@ final class PhabricatorEdgeConfig extends PhabricatorEdgeConstants {
       PhabricatorPHIDConstants::PHID_TYPE_PCKG  => 'PhabricatorFilePackage',
       PhabricatorPHIDConstants::PHID_TYPE_PKRQ  => 'PhabricatorPackageRequest',
 
+      PhabricatorPHIDConstants::PHID_TYPE_ACNT  => 'PhortuneAccount',
     );
 
     $class = idx($class_map, $phid_type);
