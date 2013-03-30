@@ -595,6 +595,13 @@ celerity_register_resource_map(array(
     'disk' => '/rsrc/image/texture/grip.png',
     'type' => 'png',
   ),
+  '/rsrc/image/texture/panel-header-gradient.png' =>
+  array(
+    'hash' => 'ad9204dd3ef5b12b645d80677d8ccead',
+    'uri' => '/res/ad9204dd/rsrc/image/texture/panel-header-gradient.png',
+    'disk' => '/rsrc/image/texture/panel-header-gradient.png',
+    'type' => 'png',
+  ),
   '/rsrc/image/texture/pholio-background.gif' =>
   array(
     'hash' => 'cf4561af116edf393dc583e5119fb412',
@@ -1190,7 +1197,7 @@ celerity_register_resource_map(array(
   ),
   'javelin-behavior-conpherence-menu' =>
   array(
-    'uri' => '/res/e04bb055/rsrc/js/application/conpherence/behavior-menu.js',
+    'uri' => '/res/ec121ad7/rsrc/js/application/conpherence/behavior-menu.js',
     'type' => 'js',
     'requires' =>
     array(
@@ -3378,6 +3385,24 @@ celerity_register_resource_map(array(
     ),
     'disk' => '/rsrc/js/application/uiexample/ReactorSendPropertiesExample.js',
   ),
+  'phabricator-workboard-view-css' =>
+  array(
+    'uri' => '/res/98971c26/rsrc/css/layout/phabricator-workboard-view.css',
+    'type' => 'css',
+    'requires' =>
+    array(
+    ),
+    'disk' => '/rsrc/css/layout/phabricator-workboard-view.css',
+  ),
+  'phabricator-workpanel-view-css' =>
+  array(
+    'uri' => '/res/db76713b/rsrc/css/layout/phabricator-workpanel-view.css',
+    'type' => 'css',
+    'requires' =>
+    array(
+    ),
+    'disk' => '/rsrc/css/layout/phabricator-workpanel-view.css',
+  ),
   'phabricator-zindex-css' =>
   array(
     'uri' => '/res/fcbf82ad/rsrc/css/core/z-index.css',
@@ -3584,6 +3609,15 @@ celerity_register_resource_map(array(
     array(
     ),
     'disk' => '/rsrc/css/application/config/setup-issue.css',
+  ),
+  'spacing-css' =>
+  array(
+    'uri' => '/res/59e4c9b1/rsrc/css/core/spacing.css',
+    'type' => 'css',
+    'requires' =>
+    array(
+    ),
+    'disk' => '/rsrc/css/core/spacing.css',
   ),
   'sprite-apps-css' =>
   array(
