@@ -70,6 +70,7 @@ final class PhabricatorDirectoryMainController
       array(
         'title' => 'Phabricator',
         'device' => true,
+        'dust' => true,
       ));
   }
 
@@ -338,22 +339,32 @@ final class PhabricatorDirectoryMainController
           'it. See %s or type <tt>help</tt>.',
         $doc_link));
 
+    $form = phabricator_form(
+      $user,
+      array(
+        'action' => '/jump/',
+        'method' => 'POST',
+        'class'  => 'phabricator-jump-nav-form',
+      ),
+      array(
+        $jump_input,
+        $jump_caption,
+      ));
+
     $panel = new AphrontPanelView();
     $panel->setHeader('Jump Nav');
-    $panel->appendChild(
-      phabricator_form(
-        $user,
-        array(
-          'action' => '/jump/',
-          'method' => 'POST',
-          'class'  => 'phabricator-jump-nav-form',
-        ),
-        array(
-          $jump_input,
-          $jump_caption,
-        )));
+    $panel->setNoBackground();
+    // $panel->appendChild();
 
-    return $panel;
+    $list_filter = new AphrontListFilterView();
+    $list_filter->appendChild(phutil_tag('h1', array(), 'Jump Nav'));
+    $list_filter->appendChild($form);
+
+    $container = phutil_tag('div',
+      array('class' => 'phabricator-jump-nav-container'),
+      $list_filter);
+
+    return $container;
   }
 
   private function renderMiniPanel($title, $body) {

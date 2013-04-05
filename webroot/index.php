@@ -12,15 +12,13 @@ try {
   // This is the earliest we can get away with this, we need env config first.
   PhabricatorAccessLog::init();
   $access_log = PhabricatorAccessLog::getLog();
-  if ($access_log) {
-    PhabricatorStartup::setGlobal('log.access', $access_log);
-    $access_log->setData(
-      array(
-        'R' => AphrontRequest::getHTTPHeader('Referer', '-'),
-        'r' => idx($_SERVER, 'REMOTE_ADDR', '-'),
-        'M' => idx($_SERVER, 'REQUEST_METHOD', '-'),
-      ));
-  }
+  PhabricatorStartup::setGlobal('log.access', $access_log);
+  $access_log->setData(
+    array(
+      'R' => AphrontRequest::getHTTPHeader('Referer', '-'),
+      'r' => idx($_SERVER, 'REMOTE_ADDR', '-'),
+      'M' => idx($_SERVER, 'REQUEST_METHOD', '-'),
+    ));
 
   DarkConsoleXHProfPluginAPI::hookProfiler();
 
@@ -63,13 +61,11 @@ try {
   $application->setRequest($request);
   list($controller, $uri_data) = $application->buildController();
 
-  if ($access_log) {
-    $access_log->setData(
-      array(
-        'U' => (string)$request->getRequestURI()->getPath(),
-        'C' => get_class($controller),
-      ));
-  }
+  $access_log->setData(
+    array(
+      'U' => (string)$request->getRequestURI()->getPath(),
+      'C' => get_class($controller),
+    ));
 
   // If execution throws an exception and then trying to render that exception
   // throws another exception, we want to show the original exception, as it is
@@ -78,13 +74,12 @@ try {
   try {
     $response = $controller->willBeginExecution();
 
-    if ($access_log) {
-      if ($request->getUser() && $request->getUser()->getPHID()) {
-        $access_log->setData(
-          array(
-            'u' => $request->getUser()->getUserName(),
-          ));
-      }
+    if ($request->getUser() && $request->getUser()->getPHID()) {
+      $access_log->setData(
+        array(
+          'u' => $request->getUser()->getUserName(),
+          'P' => $request->getUser()->getPHID(),
+        ));
     }
 
     if (!$response) {
@@ -121,9 +116,7 @@ try {
     $sink->writeResponse($response);
   } catch (Exception $ex) {
     $write_guard->dispose();
-    if ($access_log) {
-      $access_log->write();
-    }
+    $access_log->write();
     if ($original_exception) {
       $ex = new PhutilAggregateException(
         "Multiple exceptions during processing and rendering.",
@@ -137,18 +130,13 @@ try {
 
   $write_guard->dispose();
 
-  if ($access_log) {
-    $request_start = PhabricatorStartup::getStartTime();
-    $access_log->setData(
-      array(
-        'c' => $response->getHTTPResponseCode(),
-        'T' => (int)(1000000 * (microtime(true) - $request_start)),
-      ));
-    $access_log->write();
-  }
+  $access_log->setData(
+    array(
+      'c' => $response->getHTTPResponseCode(),
+      'T' => PhabricatorStartup::getMicrosecondsSinceStart(),
+    ));
 
-  DarkConsoleXHProfPluginAPI::saveProfilerSample($request, $access_log);
-
+  DarkConsoleXHProfPluginAPI::saveProfilerSample($access_log);
 } catch (Exception $ex) {
   PhabricatorStartup::didFatal("[Exception] ".$ex->getMessage());
 }

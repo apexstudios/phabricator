@@ -9,6 +9,9 @@
 # NetBeans project files
 /nbproject/
 
+# PhpStorm project files
+.idea/
+
 # Arcanist scratch directory
 /.arc
 
@@ -34,3 +37,6 @@
 /support/debug.php
 
 /vendor/
+
+# Users can link binaries here
+/support/bin/*
