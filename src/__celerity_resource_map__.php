@@ -1733,7 +1733,7 @@ celerity_register_resource_map(array(
   ),
   'javelin-behavior-maniphest-batch-editor' =>
   array(
-    'uri' => '/res/d22661be/rsrc/js/application/maniphest/behavior-batch-editor.js',
+    'uri' => '/res/00accaec/rsrc/js/application/maniphest/behavior-batch-editor.js',
     'type' => 'js',
     'requires' =>
     array(
@@ -1902,6 +1902,20 @@ celerity_register_resource_map(array(
       3 => 'javelin-dom',
     ),
     'disk' => '/rsrc/js/application/uiexample/gesture-example.js',
+  ),
+  'javelin-behavior-phabricator-hovercards' =>
+  array(
+    'uri' => '/res/65824840/rsrc/js/application/core/behavior-hovercard.js',
+    'type' => 'js',
+    'requires' =>
+    array(
+      0 => 'javelin-behavior',
+      1 => 'javelin-behavior-device',
+      2 => 'javelin-stratcom',
+      3 => 'javelin-vector',
+      4 => 'phabricator-hovercard',
+    ),
+    'disk' => '/rsrc/js/application/core/behavior-hovercard.js',
   ),
   'javelin-behavior-phabricator-keyboard-pager' =>
   array(
@@ -3027,9 +3041,23 @@ celerity_register_resource_map(array(
     ),
     'disk' => '/rsrc/css/layout/phabricator-header-view.css',
   ),
+  'phabricator-hovercard' =>
+  array(
+    'uri' => '/res/345f3fca/rsrc/js/application/core/Hovercard.js',
+    'type' => 'js',
+    'requires' =>
+    array(
+      0 => 'javelin-install',
+      1 => 'javelin-dom',
+      2 => 'javelin-vector',
+      3 => 'javelin-request',
+      4 => 'javelin-uri',
+    ),
+    'disk' => '/rsrc/js/application/core/Hovercard.js',
+  ),
   'phabricator-hovercard-view-css' =>
   array(
-    'uri' => '/res/68d69a87/rsrc/css/layout/phabricator-hovercard-view.css',
+    'uri' => '/res/ed56200c/rsrc/css/layout/phabricator-hovercard-view.css',
     'type' => 'css',
     'requires' =>
     array(
