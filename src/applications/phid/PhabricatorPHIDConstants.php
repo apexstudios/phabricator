@@ -44,5 +44,6 @@ final class PhabricatorPHIDConstants {
 
   const PHID_TYPE_XACT    = 'XACT';
   const PHID_TYPE_XCMT    = 'XCMT';
+  const PHID_TYPE_XUSR    = 'XUSR';
 
 }
