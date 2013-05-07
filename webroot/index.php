@@ -21,9 +21,7 @@ try {
     ));
 
   DarkConsoleXHProfPluginAPI::hookProfiler();
-
-  PhutilErrorHandler::setErrorListener(
-    array('DarkConsoleErrorLogPluginAPI', 'handleErrors'));
+  DarkConsoleErrorLogPluginAPI::registerErrorHandler();
 
   $sink = new AphrontPHPHTTPSink();
 
